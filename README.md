@@ -6,6 +6,6 @@ Explore my journey, projects, and contributions, and feel free to connect with m
 # Contact 🤝
 I’d love to hear from you! Feel free to reach out through any of the following platforms:
 
-Email: vishal.trivedi@example.com ![GithubCatGIF](https://github.com/user-attachments/assets/2888a5d2-f57b-4562-85f1-1f9712662820)
-LinkedIn: linkedin.com/in/vishal-trivedi
-GitHub: github.com/spy3y3
+Email: vishal.trivedi@example.com
+LinkedIn: https://www.linkedin.com/in/spy3y3/
+GitHub: https://github.com/Spy3y3
