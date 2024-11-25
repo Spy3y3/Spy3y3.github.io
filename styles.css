@@ -12,88 +12,115 @@ body {
     scroll-behavior: smooth;
 }
 
-/* Bounce Animation - Infinite loop */
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0); /* Initial and final state */
-    }
-    50% {
-        transform: translateY(-15px); /* Bounce height */
-    }
+/* =================================================
+   Name Section Styling (Hi, I'm Vishal Trivedi 👋)
+==================================================== */
+
+/* Styling for the content and text */
+.content h1 {
+  display: flex; /* Keep elements inline */
+  align-items: center; /* Vertically align */
+  font-size: 32px;
+  font-weight: 500;
+  color: #333;
 }
 
-/* Apply Bounce Animation to the whole title */
-.title {
-    animation: bounce 2s ease-in-out infinite; /* Infinite bounce animation */
+.static {
+  color: #f38375;
+  font-weight: bold;
 }
 
-/* Optional: Adjusting the appearance of the title for better visual effect */
-.title .static {
-    display: inline-block; /* Make the static part an inline-block to allow animation */
+.rotating-text {
+  display: inline-block;
+  position: relative;
+  margin-left: 10px; /* Spacing between static and rotating text */
 }
 
-/* Sliding text animation */
-@keyframes slideIn {
-    0% {
-        opacity: 0;
-        transform: translateY(100%);
-    }
-    25% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    75% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-100%);
-    }
-}
-
-/* Container for sliding words */
-.cd-headline {
-    display: inline-block;
-    font-weight: 700;
-    font-size: 2rem;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Word wrapper for sliding effect */
 .cd-words-wrapper {
-    display: inline-block;
-    position: relative;
-    vertical-align: top;
-    overflow: hidden;
-    height: 1em; /* Adjust height to match text */
+  display: inline-block;
+  position: relative;
+  white-space: nowrap; /* Prevent text wrapping */
 }
 
-/* Each word will be an inline-block, positioned absolutely */
-.cd-words-wrapper b {
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
+/* Hide all words initially */
+.word {
+  display: none;
+  font-size: 32px;
+  font-weight: normal;
+  color: #ffee32;
+  white-space: nowrap; /* Prevent words from wrapping */
+  transform: translateY(-10px); /* Start slightly above */
+}
+
+/* The visible word */
+.word.is-visible {
+  display: inline-block;
+  animation: slideInFromTop 1s ease-in-out forwards; /* Slide down into place */
+}
+
+/* Fade-in animation for rotating text (slide in from top to bottom) */
+@keyframes slideInFromTop {
+  0% {
     opacity: 0;
-    transform: translateY(100%);
-    animation: slideIn 3s ease-in-out infinite;  /* Infinite sliding animation */
-}
-
-/* When word is visible */
-.cd-words-wrapper b.is-visible {
+    transform: translateY(-10px); /* Start slightly above */
+  }
+  100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0); /* Slide down to original position */
+  }
 }
 
-/* When word is hidden */
-.cd-words-wrapper b.is-hidden {
+/* Fade-out animation for when the word disappears (slide up and fade out) */
+@keyframes slideOutToTop {
+  0% {
+    opacity: 1;
+    transform: translateY(0); /* Start at the current position */
+  }
+  100% {
     opacity: 0;
-    transform: translateY(-100%);
+    transform: translateY(-10px); /* Move upwards a smaller amount as it fades out */
+  }
 }
 
-/* Sticky Navigation Bar - Adjusted Position */
+
+
+
+/* ===============================
+   Profile Photo Section Styling
+================================= */
+.header {
+    display: flex; /* Aligns photo and content horizontally */
+    align-items: center; /* Vertically center the elements */
+    justify-content: flex-start; /* Align everything to the left */
+    gap: 0px; /* Space between the photo and the text */
+    padding: 0px; /* Add padding around the entire header */
+}
+
+.photo {
+    flex-shrink: 0; /* Prevent the image from shrinking */
+    margin-left: 20px; /* Add space from the screen's edge */
+}
+
+.photo img {
+    width: 250px; /* Adjust width */
+    height: auto; /* Adjust height */
+    border-radius: 10%; /* Circular image */
+    object-fit: cover; /* Proper image scaling */
+}
+
+.content {
+    flex-grow: 1; /* Allow text content to take available space */
+    text-align: justify; /* Ensure text aligns to the left */
+}
+
+
+
+
+
+/* ===============================
+   Sticky Navigation Bar Section Styling
+================================= */
+/* Adjusted Position */
 .sticky-nav {
     position: fixed;
     top: 20px; /* Move the nav down from the top */
@@ -156,6 +183,8 @@ body {
     background-color: #0077b5;
     color: white;
 }
+
+
 
 /* Sections */
 .section {
@@ -259,23 +288,9 @@ html {
 }
 
 
-/* Sticky Navigation Bar */
-.sticky-nav {
-    position: fixed;
-    top: 20px;
-    width: 50%;
-    left: 25%;
-    background-color: #3bd6c6;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    height: 40px;
-    border-radius: 50px;
-    transition: top 0.3s ease-in-out, background-color 0.3s;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+/* ===============================
+   Light & Dark Mode Section Styling
+================================= */
 
 /* Light Mode */
 body {
@@ -345,23 +360,21 @@ body.dark .nav-links a:hover {
     margin-right: 20px;
     cursor: pointer;
 }
-
+		
 .material-icons {
     transition: color 0.3s ease-in-out;
 }
 
 
-
-/* Responsive Adjustments */
+/* Responsive Design */
 @media (max-width: 768px) {
     .sticky-nav {
-        height: 35px; /* Further reduced for mobile */
-        width: 92%;
-        left: 4%;
+        width: 90%; /* Responsive width */
+        left: 5%; /* Center it */
     }
+
     .nav-links a {
-        font-size: 10px; /* Smaller font size for mobile */
-        padding: 4px 6px;
+        font-size: 10px; /* Smaller font for smaller screens */
     }
 }
 
@@ -372,39 +385,45 @@ body.dark .nav-links a:hover {
     background: linear-gradient(to right, #ff7e5f, #feb47b); /* Light gradient background */
     color: #fff;
     padding: 50px 0;
-    text-align: center;
+    text-align: justify;
+    margin-bottom: 50px; /* Add margin to create space below the section */
+    min-height: 500px; /* Ensure the section has enough height */
 }
 
-.section-experience h2 {
-    font-size: 2.5rem;
-    margin-bottom: 40px;
-    color: #fff;
-    font-weight: 700;
-    letter-spacing: 2px;
+.expertise-section {
+    display: flex;
+    gap: 20px;
+    margin-top: 50px; /* Ensure there's enough space from the previous section */
+    max-width: 1200px;
 }
 
+
+/* Container for the experience items */
 .experience-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
-    gap: 40px;
+    gap: 20px; /* Space between items */
     flex-wrap: wrap;
-    padding: 20px;
+    padding: 0 20px; /* Padding for container */
+    overflow: hidden; /* Prevents overflow */
+    margin-top: 20px; /* Add margin to avoid immediate sticking to title */
 }
 
+/* Experience item styling */
 .experience-item {
     background-color: #ffffff;
     color: #333;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    height: 100%;
+    border-radius: 30px;
+    box-shadow: 0 0 20px 5px rgba(0, 255, 255, 0.4); /* Default glowing shadow */
+    width: 420px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: fadeIn 0.8s ease-in-out;
-    opacity: 0;
-    transition: opacity 1s ease;
+    opacity: 1; /* Ensure the card is fully visible */
+    margin-bottom: 20px; /* Adds spacing between the items */
 }
+
 .experience-item.fade-in {
     opacity: 1;
 }
@@ -442,6 +461,7 @@ body.dark .nav-links a:hover {
     color: #ff7e5f; /* Color change when hovering */
 }
 
+/* Animation for fade-in effect */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -454,75 +474,134 @@ body.dark .nav-links a:hover {
 }
 
 /* Responsive Adjustments */
+
+/* Medium screens (Tablets) */
+@media (max-width: 1024px) {
+    .experience-container {
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .experience-item {
+        width: calc(50% - 20px); /* Adjusts width to 50% on medium screens */
+    }
+}
+
+/* Small screens (Mobile Devices) */
 @media (max-width: 768px) {
     .experience-container {
         flex-direction: column;
         gap: 20px;
+        justify-content: center;
     }
 
     .experience-item {
-        width: 90%;
+        width: calc(90% - 20px); /* Adjusts width to 90% on small screens */
     }
 }
+
+/* Very small screens (Mobile Phones) */
+@media (max-width: 480px) {
+    .experience-item {
+        width: 100%; /* Full width on very small screens */
+    }
+}
+
 
 
 /* ===============================
    Expertise Section Styling
 ================================= */
-
+/* Expertise Section Styling */
 .expertise-section {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
     gap: 20px;
-    margin: 40px auto;
+    margin-top: 50px; /* Space between sections */
     max-width: 1200px;
+    padding: 20px;
+    min-height: 500px; /* Ensure the section has enough height */
+    background-color: #f9f9f9; /* Light background for better contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Bar Charts Container */
 .bar-charts-container {
-    flex: 1;
     display: flex;
-    flex-direction: column;
-}
-
-.bar-charts-scroll {
-    display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Allow wrapping of content */
     justify-content: center;
     gap: 20px;
-    overflow-y: scroll;
-    max-height: 500px; /* Adjust for vertical scrolling */
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
 }
 
+/* Bar Chart Container */
 .bar-chart {
-    width: 45%; /* Two charts side-by-side */
-    height: 250px;
-}
-
-.pie-chart {
-    flex: 0.5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #ddd;
+    width: 100%; /* Ensure charts take full width of their grid cell */
+    height: 300px; /* Keep the same height for consistency */
+    background: #fff; /* White background for canvas */
     border-radius: 10px;
     padding: 20px;
-    background: linear-gradient(135deg, #f7f8fc, #e9ecef);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(1); /* Initial scale */
+    transition: transform 0.3s ease-in-out; /* Hover effect */
 }
 
-.bar-charts-scroll::-webkit-scrollbar {
-    width: 10px;
+/* Hover effect for bar chart container */
+.bar-chart:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
-.bar-charts-scroll::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 10px;
+/* Ensure charts scale properly on small screens */
+@media (max-width: 768px) {
+    .expertise-section {
+        grid-template-columns: 1fr; /* Stack charts vertically on smaller screens */
+    }
 }
 
-.bar-charts-scroll::-webkit-scrollbar-track {
-    background: #f4f4f4;
+
+/* ===============================
+   Pie Chart Section Styling
+================================= */
+/* Container for the Pie Chart */
+.pie-chart-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    overflow: hidden;
+    background: #fff;
 }
+
+/* Animate the Pie Chart on load */
+@keyframes pieChartAnimation {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Apply animation */
+.pie-chart-container canvas {
+    animation: pieChartAnimation 1.5s ease-out forwards;
+}
+
+/* Hover Effect for Interactivity */
+.pie-chart-container:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+.pie-chart-container:hover canvas {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
 
 
 
@@ -563,4 +642,24 @@ body.dark .nav-links a:hover {
     font-size: 1rem;
     color: #333;
     margin: 5px 0;
+}
+
+/* Ensure the theme toggle button is always visible */
+.theme-toggle-btn {
+    font-size: 2rem; /* Adjust the icon size */
+    background-color: transparent; /* No background */
+    border: none; /* Remove borders */
+    color: inherit; /* Inherit the text color */
+    cursor: pointer; /* Show pointer on hover */
+    padding: 10px; /* Add padding for better click area */
+    position: fixed; /* Keep the button fixed at the top-right */
+    top: 20px;
+    right: 20px;
+    z-index: 1000; /* Ensure the button is above other content */
+}
+
+/* Optional hover effect */
+.theme-toggle-btn:hover {
+    transform: scale(1.1); /* Slightly enlarge the button on hover */
+    transition: transform 0.2s ease-in-out;
 }
