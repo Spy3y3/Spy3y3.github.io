@@ -1,665 +1,364 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+/* ===============================
+   Sticky Navigation Bar Section Styling
+================================= */
+document.addEventListener('DOMContentLoaded', () => {
+    const stickyNav = document.getElementById('stickyNav');
+    let lastScrollY = window.scrollY;
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
 
-body {
-    font-family: 'Poppins', sans-serif;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-}
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            // Scroll Down: Hide navigation
+            stickyNav.style.top = '-60px';
+        } else {
+            // Scroll Up: Show navigation
+            stickyNav.style.top = '10px'; /* Visible position */
+        }
+
+        lastScrollY = currentScrollY; // Update scroll position
+    });
+});
+
 
 /* =================================================
    Name Section Styling (Hi, I'm Vishal Trivedi 👋)
 ==================================================== */
 
-/* Styling for the content and text */
-.content h1 {
-  display: flex; /* Keep elements inline */
-  align-items: center; /* Vertically align */
-  font-size: 32px;
-  font-weight: 500;
-  color: #333;
-}
+document.addEventListener('DOMContentLoaded', function () {
+    const words = document.querySelectorAll('.cd-words-wrapper .word');
+    let currentIndex = 0;
 
-.static {
-  color: #f38375;
-  font-weight: bold;
-}
+    function changeWord() {
+        // Fade out the current word before changing it
+        words[currentIndex].classList.remove('is-visible');
+        words[currentIndex].classList.add('fade-out'); // Apply fade-out
 
-.rotating-text {
-  display: inline-block;
-  position: relative;
-  margin-left: 10px; /* Spacing between static and rotating text */
-}
+        // Move to the next word
+        currentIndex = (currentIndex + 1) % words.length;
 
-.cd-words-wrapper {
-  display: inline-block;
-  position: relative;
-  white-space: nowrap; /* Prevent text wrapping */
-}
-
-/* Hide all words initially */
-.word {
-  display: none;
-  font-size: 32px;
-  font-weight: normal;
-  color: #ffee32;
-  white-space: nowrap; /* Prevent words from wrapping */
-  transform: translateY(-10px); /* Start slightly above */
-}
-
-/* The visible word */
-.word.is-visible {
-  display: inline-block;
-  animation: slideInFromTop 1s ease-in-out forwards; /* Slide down into place */
-}
-
-/* Fade-in animation for rotating text (slide in from top to bottom) */
-@keyframes slideInFromTop {
-  0% {
-    opacity: 0;
-    transform: translateY(-10px); /* Start slightly above */
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0); /* Slide down to original position */
-  }
-}
-
-/* Fade-out animation for when the word disappears (slide up and fade out) */
-@keyframes slideOutToTop {
-  0% {
-    opacity: 1;
-    transform: translateY(0); /* Start at the current position */
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-10px); /* Move upwards a smaller amount as it fades out */
-  }
-}
-
-
-
-
-/* ===============================
-   Profile Photo Section Styling
-================================= */
-.header {
-    display: flex; /* Aligns photo and content horizontally */
-    align-items: center; /* Vertically center the elements */
-    justify-content: flex-start; /* Align everything to the left */
-    gap: 0px; /* Space between the photo and the text */
-    padding: 0px; /* Add padding around the entire header */
-}
-
-.photo {
-    flex-shrink: 0; /* Prevent the image from shrinking */
-    margin-left: 20px; /* Add space from the screen's edge */
-}
-
-.photo img {
-    width: 250px; /* Adjust width */
-    height: auto; /* Adjust height */
-    border-radius: 10%; /* Circular image */
-    object-fit: cover; /* Proper image scaling */
-}
-
-.content {
-    flex-grow: 1; /* Allow text content to take available space */
-    text-align: justify; /* Ensure text aligns to the left */
-}
-
-
-
-
-
-/* ===============================
-   Sticky Navigation Bar Section Styling
-================================= */
-/* Adjusted Position */
-.sticky-nav {
-    position: fixed;
-    top: 20px; /* Move the nav down from the top */
-    width: 50%;
-    left: 25%;
-    background-color: #3bd6c6;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    height: 40px;
-    border-radius: 50px;
-    transition: top 0.3s ease-in-out; /* Smooth transition */
-    padding: 10px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Navigation Links */
-.nav-links {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;	
-}
-
-.nav-links li {
-    margin: 0 5px;
-}
-
-.nav-links a {
-    display: flex; /* Use flexbox for alignment */
-    align-items: center; /* Align icon and text vertically */
-    gap: 0px; /* Space between icon and text */
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    padding: 10px 15px;
-    transition: color 0.3s, background-color 0.3s;
-    font-size: 12px;
-    border-radius: 5px;
-}
-
-.nav-links a i {
-    margin-right: 10px; /* Space between icon and text */
-    font-size: 14px; /* Adjust icon size */
-    vertical-align: middle; /* Align icon with text */
-}
-
-.nav-links a:hover {
-    background-color: #10898d;
-    color: black;
-}
-
-/* Active link */
-.nav-links a.active {
-    background-color: #0077b5;
-    color: white;
-}
-
-
-
-/* Sections */
-.section {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    position: relative;
-}
-
-.section-1 {
-    background: linear-gradient(to right, #6a11cb, #2575fc);
-    color: #fff;
-}
-
-.section-2 {
-    background: linear-gradient(to right, #ff7e5f, #feb47b);
-    color: #fff;
-}
-
-.section-3 {
-    background: linear-gradient(to right, #43cea2, #185a9d);
-    color: #fff;
-}
-
-.section-4 {
-    background: linear-gradient(to right, #43cea2, #185a9d);
-    color: #fff;
-}
-.content h1, .content h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
-.content p {
-    font-size: 1.2rem;
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.6;
-}
-
-/* Smooth Scroll Effect */
-html {
-    scroll-behavior: smooth;
-}
-
-.social-links {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.icon {
-    font-size: 2rem;
-    color: #fff;
-    border: 2px solid #fff;
-    padding: 15px;
-    border-radius: 50%;
-    transition: transform 0.3s, background-color 0.3s, color 0.3s;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 60px;
-    height: 60px;
-    text-decoration: none;
-}
-
-.icon.github:hover {
-    background-color: #333;
-    color: #fff;
-    transform: scale(1.2);
-}
-
-.icon.linkedin:hover {
-    background-color: #0077b5;
-    color: #fff;
-    transform: scale(1.2);
-}
-
-.icon.email:hover {
-    background-color: #ea4335;
-    color: #fff;
-    transform: scale(1.2);
-}
-
-.icon:hover {
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-
-/* ===============================
-   Light & Dark Mode Section Styling
-================================= */
-
-/* Light Mode */
-body {
-    background-color: #fff;
-    color: #333;
-}
-
-body.light .section {
-    color: #333;
-}
-
-body.light .section-1 {
-    background: linear-gradient(to right, #6a11cb, #2575fc);
-}
-
-body.light .section-2 {
-    background: linear-gradient(to right, #ff7e5f, #feb47b);
-}
-
-body.light .section-3 {
-    background: linear-gradient(to right, #43cea2, #185a9d);
-}
-
-body.light .sticky-nav {
-    background-color: #3bd6c6; /* Light nav bar background */
-    color: #333;
-}
-
-/* Dark Mode */
-body.dark {
-    background-color: #121212;
-    color: #e0e0e0;
-}
-
-body.dark .section {
-    color: #e0e0e0;
-}
-
-body.dark .section-1 {
-    background: linear-gradient(to right, #3a3a3a, #1f1f1f);
-}
-
-body.dark .section-2 {
-    background: linear-gradient(to right, #553c3c, #2b2929);
-}
-
-body.dark .section-3 {
-    background: linear-gradient(to right, #344d5c, #1d313d);
-}
-
-body.dark .sticky-nav {
-    background-color: #121212; /* Dark nav bar background */
-    color: #e0e0e0;
-}
-
-body.dark .nav-links a {
-    color: #e0e0e0;
-}
-
-body.dark .nav-links a:hover {
-    background-color: #333;
-}
-
-/* Icon toggle for theme change */
-.theme-toggle {
-    font-size: 20px;
-    margin-right: 20px;
-    cursor: pointer;
-}
-		
-.material-icons {
-    transition: color 0.3s ease-in-out;
-}
-
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .sticky-nav {
-        width: 90%; /* Responsive width */
-        left: 5%; /* Center it */
+        // Give it a little time for fade-out before displaying the next word
+        setTimeout(() => {
+            // Remove fade-out class and make the next word visible
+            words[currentIndex].classList.remove('fade-out');
+            words[currentIndex].classList.add('is-visible');
+        }, 200); // Reduced from 500ms to 200ms for quicker change
     }
 
-    .nav-links a {
-        font-size: 10px; /* Smaller font for smaller screens */
-    }
-}
+    // Initialize the first word to be visible
+    words[currentIndex].classList.add('is-visible');
 
-/* ===============================
-   Experience Section Styling
-================================= */
-.section-experience {
-    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Light gradient background */
-    color: #fff;
-    padding: 50px 0;
-    text-align: justify;
-    margin-bottom: 50px; /* Add margin to create space below the section */
-    min-height: 500px; /* Ensure the section has enough height */
-}
-
-.expertise-section {
-    display: flex;
-    gap: 20px;
-    margin-top: 50px; /* Ensure there's enough space from the previous section */
-    max-width: 1200px;
-}
+    // Change words every 2 seconds (previously it was 3s)
+    setInterval(changeWord, 2000); // Reduced from 3000ms to 2000ms
+});
 
 
-/* Container for the experience items */
-.experience-container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 20px; /* Space between items */
-    flex-wrap: wrap;
-    padding: 0 20px; /* Padding for container */
-    overflow: hidden; /* Prevents overflow */
-    margin-top: 20px; /* Add margin to avoid immediate sticking to title */
-}
 
-/* Experience item styling */
-.experience-item {
-    background-color: #ffffff;
-    color: #333;
-    padding: 20px;
-    border-radius: 30px;
-    box-shadow: 0 0 20px 5px rgba(0, 255, 255, 0.4); /* Default glowing shadow */
-    width: 420px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    animation: fadeIn 0.8s ease-in-out;
-    opacity: 1; /* Ensure the card is fully visible */
-    margin-bottom: 20px; /* Adds spacing between the items */
-}
 
-.experience-item.fade-in {
-    opacity: 1;
-}
 
-.experience-item:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
+document.addEventListener("DOMContentLoaded", function () {
+    const themeIcon = document.getElementById('theme-icon');
+    const body = document.body;
 
-.experience-item h3 {
-    font-size: 1.6rem;
-    color: #2575fc;
-    margin-bottom: 10px;
-}
-
-.experience-item p.date {
-    font-size: 1rem;
-    color: #777;
-    margin-bottom: 15px;
-}
-
-.experience-item ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.experience-item ul li {
-    font-size: 1rem;
-    color: #333;
-    margin: 10px 0;
-}
-
-/* Hover Effect on Experience Items */
-.experience-item:hover h3 {
-    color: #ff7e5f; /* Color change when hovering */
-}
-
-/* Animation for fade-in effect */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Responsive Adjustments */
-
-/* Medium screens (Tablets) */
-@media (max-width: 1024px) {
-    .experience-container {
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: center;
+    // Set the icon based on the current theme from localStorage
+    if (localStorage.getItem('theme') === 'dark') {
+        body.classList.add('dark');
+        themeIcon.textContent = '🌙'; // Set moon icon for dark mode
+    } else {
+        body.classList.add('light');
+        themeIcon.textContent = '☀️'; // Set sun icon for light mode
     }
 
-    .experience-item {
-        width: calc(50% - 20px); /* Adjusts width to 50% on medium screens */
-    }
-}
-
-/* Small screens (Mobile Devices) */
-@media (max-width: 768px) {
-    .experience-container {
-        flex-direction: column;
-        gap: 20px;
-        justify-content: center;
-    }
-
-    .experience-item {
-        width: calc(90% - 20px); /* Adjusts width to 90% on small screens */
-    }
-}
-
-/* Very small screens (Mobile Phones) */
-@media (max-width: 480px) {
-    .experience-item {
-        width: 100%; /* Full width on very small screens */
-    }
-}
+    // Theme Toggle functionality
+    themeIcon.addEventListener('click', () => {
+        if (body.classList.contains('dark')) {
+            // Switch to light mode
+            body.classList.remove('dark');
+            body.classList.add('light');
+            themeIcon.textContent = '☀️'; // Set sun icon for light mode
+            localStorage.setItem('theme', 'light'); // Store in localStorage
+        } else {
+            // Switch to dark mode
+            body.classList.remove('light');
+            body.classList.add('dark');
+            themeIcon.textContent = '🌙'; // Set moon icon for dark mode
+            localStorage.setItem('theme', 'dark'); // Store in localStorage
+        }
+    });
+});
 
 
+
+// JS to trigger the fade-in effect on scroll
+const experienceItems = document.querySelectorAll('.experience-item');
+
+window.addEventListener('scroll', () => {
+    const scrollPosition = window.scrollY + window.innerHeight;
+    experienceItems.forEach(item => {
+        if (item.offsetTop < scrollPosition) {
+            item.classList.add('fade-in');
+        }
+    });
+});
 
 /* ===============================
    Expertise Section Styling
 ================================= */
-/* Expertise Section Styling */
-.expertise-section {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two columns */
-    gap: 20px;
-    margin-top: 50px; /* Space between sections */
-    max-width: 1200px;
-    padding: 20px;
-    min-height: 500px; /* Ensure the section has enough height */
-    background-color: #f9f9f9; /* Light background for better contrast */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+// Function to create a pie chart with animation
+function createPieChart(ctx, labels, data, colors) {
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    data: data,
+                    backgroundColor: colors,
+                    hoverOffset: 10, // Slightly enlarges the segment on hover
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top', // Position the legend above the chart
+                    labels: {
+                        font: {
+                            size: 14,
+                            weight: 'bold',
+                        },
+                        padding: 20,
+                    },
+                },
+                tooltip: {
+                    enabled: true,
+                    callbacks: {
+                        label: function (context) {
+                            const label = context.label || '';
+                            const value = context.raw || 0;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = ((value / total) * 100).toFixed(1);
+                            return `${label}: ${value} (${percentage}%)`;
+                        },
+                    },
+                },
+            },
+            animation: {
+                animateScale: true, // Adds scaling effect
+                animateRotate: true, // Adds rotation effect
+                duration: 2000, // Duration of the animation in ms
+                easing: 'easeInOutQuart', // Smooth easing for animation
+            },
+        },
+    });
 }
 
-/* Bar Charts Container */
-.bar-charts-container {
-    display: flex;
-    flex-wrap: wrap; /* Allow wrapping of content */
-    justify-content: center;
-    gap: 20px;
-}
 
-/* Bar Chart Container */
-.bar-chart {
-    width: 100%; /* Ensure charts take full width of their grid cell */
-    height: 300px; /* Keep the same height for consistency */
-    background: #fff; /* White background for canvas */
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transform: scale(1); /* Initial scale */
-    transition: transform 0.3s ease-in-out; /* Hover effect */
-}
 
-/* Hover effect for bar chart container */
-.bar-chart:hover {
-    transform: scale(1.05); /* Slightly enlarge on hover */
-}
+// Select the canvas for the Pie Chart
+const ctx = document.getElementById('pieChart').getContext('2d');
 
-/* Ensure charts scale properly on small screens */
-@media (max-width: 768px) {
-    .expertise-section {
-        grid-template-columns: 1fr; /* Stack charts vertically on smaller screens */
+// Data for the Pie chart
+const data = {
+    labels: ['BFSI', 'FMCG', 'Media', 'Telecommunication'], // Labels for each segment
+    datasets: [{
+        data: [25, 35, 20, 20], // Percentages for each category
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'], // Colors for slices
+        hoverBackgroundColor: ['#FF416C', '#357EC7', '#FFB100', '#38B0A7'], // Hover colors
+        borderWidth: 2, // Width of borders
+        borderColor: '#fff', // Border color
+    }]
+};
+
+// Chart Configuration
+const config = {
+    type: 'pie',
+    data: data,
+    options: {
+        responsive: true, // Adjust chart to container size
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    font: {
+                        size: 14,
+                    },
+                    color: '#333', // Legend text color
+                    padding: 15,
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        const label = tooltipItem.label || '';
+                        const value = tooltipItem.raw || 0;
+                        return `${label}: ${value}%`;
+                    }
+                },
+                backgroundColor: 'rgba(0, 0, 0, 0.7)', // Tooltip background
+                titleFont: {
+                    weight: 'bold',
+                }
+            }
+        },
+        animation: {
+            duration: 1500, // Animation duration in milliseconds
+            easing: 'easeOutBounce', // Easing effect for animation
+            animateRotate: true, // Rotate animation for pie chart
+            animateScale: true, // Scale animation for pie chart
+        }
     }
-}
+};
+
+// Initialize the Chart
+const pieChart = new Chart(ctx, config);
 
 
-/* ===============================
-   Pie Chart Section Styling
-================================= */
-/* Container for the Pie Chart */
-.pie-chart-container {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    margin: auto;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    overflow: hidden;
-    background: #fff;
-}
 
-/* Animate the Pie Chart on load */
-@keyframes pieChartAnimation {
-    0% {
-        transform: scale(0.8);
-        opacity: 0;
+
+
+function createBarChart(ctx, labels, data, bgColor, xAxisLabel) {
+    // Create the initial chart with empty data (0%)
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Proficiency (0 to 10)',
+                    data: Array(labels.length).fill(0), // Start with all bars at 0
+                    backgroundColor: bgColor,
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            animation: {
+                duration: 0, // Disable chart's own animation to handle it manually
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: xAxisLabel,
+                        font: {
+                            size: 14,
+                            weight: 'bold',
+                        },
+                    },
+                },
+                y: {
+                    beginAtZero: true,
+                    max: 10, // Change this to 10 for the scale 0 to 10
+                    title: {
+                        display: true,
+                        text: 'Proficiency (0 to 10)', // Update label to reflect the scale
+                        font: {
+                            size: 14,
+                            weight: 'bold',
+                        },
+                    },
+                },
+            },
+            plugins: {
+                legend: {
+                    display: false, // Hide the legend for simplicity
+                },
+            },
+        },
+    });
+
+    // Function to simulate continuous water fill animation
+    function continuousAnimation() {
+        let step = 0;
+        const interval = setInterval(() => {
+            // Gradually increase each bar's data value
+            chart.data.datasets[0].data = chart.data.datasets[0].data.map((value, index) => {
+                const target = data[index] / 10; // Convert data to a 0 to 10 scale
+                return Math.min(value + 0.1, target); // Increase value but don't exceed the target
+            });
+
+            chart.update(); // Re-render chart with updated data
+
+            step++;
+            if (step > 100) {
+                // Reset the bars after completing a full cycle
+                chart.data.datasets[0].data = Array(labels.length).fill(0); // Reset bars to 0
+                chart.update();
+                step = 0; // Restart the cycle
+            }
+        }, 50); // Adjust the interval to control speed of the filling effect (50ms)
     }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+
+    // Start the continuous animation after a small delay to allow the chart to render
+    setTimeout(continuousAnimation, 100);
 }
 
-/* Apply animation */
-.pie-chart-container canvas {
-    animation: pieChartAnimation 1.5s ease-out forwards;
+// Bar Chart Data
+const programmingCtx = document.getElementById('programmingChart').getContext('2d');
+const biCtx = document.getElementById('biChart').getContext('2d');
+const cloudCtx = document.getElementById('cloudChart').getContext('2d');
+const etlCtx = document.getElementById('etlChart').getContext('2d');
+
+// Initialize Bar Charts with continuous water fill effect
+createBarChart(
+    programmingCtx,
+    ['SQL', 'Python'],
+    [85, 70],
+    ['#4BC0C0', '#36A2EB'],
+    'Programming Languages'
+);
+
+createBarChart(
+    biCtx,
+    ['Power BI', 'Tableau', 'Looker', 'QuickSight'],
+    [85, 75, 70, 65],
+    ['#FF6384', '#FF9F40', '#FFCE56', '#4BC0C0'],
+    'Business Intelligence Tools'
+);
+
+createBarChart(
+    cloudCtx,
+    ['AWS S3', 'Redshift', 'Snowflake'],
+    [70, 65, 50],
+    ['#36A2EB', '#9966FF', '#FF6384'],
+    'Cloud Technologies'
+);
+
+createBarChart(
+    etlCtx,
+    ['Alteryx'],
+    [75],
+    ['#FF9F40'],
+    'ETL Tools'
+);
+
+
+
+
+
+
+
+
+
+
+// Detect when the section is visible
+function observeCharts() {
+    const chartSection = document.querySelector('.chart-section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                initializeCharts();
+                observer.unobserve(chartSection); // Trigger only once
+            }
+        });
+    }, { threshold: 0.5 });
+
+    observer.observe(chartSection);
 }
 
-/* Hover Effect for Interactivity */
-.pie-chart-container:hover {
-    transform: scale(1.05);
-    transition: transform 0.3s ease;
-}
-
-.pie-chart-container:hover canvas {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-}
+// Initialize the observer on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', observeCharts);
 
 
-
-
-
-
-
-/* ===============================
-   Education Section Styling
-================================= */
-.education-details {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.education-item {
-    background-color: #ffffff; /* Light background for cards */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.8s ease-in-out;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.education-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.education-item h3 {
-    font-size: 1.5rem;
-    color: #2575fc;
-    margin-bottom: 10px;
-}
-
-.education-item p {
-    font-size: 1rem;
-    color: #333;
-    margin: 5px 0;
-}
-
-/* Ensure the theme toggle button is always visible */
-.theme-toggle-btn {
-    font-size: 2rem; /* Adjust the icon size */
-    background-color: transparent; /* No background */
-    border: none; /* Remove borders */
-    color: inherit; /* Inherit the text color */
-    cursor: pointer; /* Show pointer on hover */
-    padding: 10px; /* Add padding for better click area */
-    position: fixed; /* Keep the button fixed at the top-right */
-    top: 20px;
-    right: 20px;
-    z-index: 1000; /* Ensure the button is above other content */
-}
-
-/* Optional hover effect */
-.theme-toggle-btn:hover {
-    transform: scale(1.1); /* Slightly enlarge the button on hover */
-    transition: transform 0.2s ease-in-out;
-}
