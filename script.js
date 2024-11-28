@@ -1,3 +1,14 @@
+<script>
+    // Display a message on the screen for a few seconds
+    document.body.innerHTML = "<h1>Redirecting, please wait...</h1>";
+
+    // After a delay of 3 seconds, redirect to the new URL
+    setTimeout(function() {
+        window.location.href = "https://spy3y3.github.io/";
+    }, 3000); // 3 seconds delay
+</script>
+
+
 /* ===============================
    Sticky Navigation Bar Section Styling
 ================================= */
