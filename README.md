@@ -8,4 +8,4 @@ I’d love to hear from you! Feel free to reach out through any of the following
 
 Email: vishal.trivedi@example.com <br>
 LinkedIn: https://www.linkedin.com/in/spy3y3/ <br>
-Portfolio: https://github.com/Spy3y3/vishu.github.io
+Portfolio: https://spy3y3.github.io/vishu.github.io/
