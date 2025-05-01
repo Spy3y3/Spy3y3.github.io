@@ -164,7 +164,7 @@ const ctx = document.getElementById('pieChart').getContext('2d');
 const data = {
     labels: ['BFSI', 'FMCG', 'Media', 'Telecommunication'], // Labels for each segment
     datasets: [{
-        data: [25, 35, 20, 20], // Percentages for each category
+        data: [40, 20, 20, 20], // Percentages for each category
         backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'], // Colors for slices
         hoverBackgroundColor: ['#FF416C', '#357EC7', '#FFB100', '#38B0A7'], // Hover colors
         borderWidth: 2, // Width of borders
