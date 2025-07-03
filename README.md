@@ -7,4 +7,4 @@ You can explore my journey, projects, and contributions, and feel free to connec
 I’d love to hear from you! Feel free to reach out through any of the following platforms:
 
 LinkedIn: https://www.linkedin.com/in/spy3y3/ <br>
-Portfolio: https://spy3y3.github.io/vishu.github.io/
+Portfolio: https://spy3y3.github.io/
