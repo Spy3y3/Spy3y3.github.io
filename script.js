@@ -215,17 +215,16 @@ sectionHeadings.forEach((heading, index) => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- All your existing filter logic remains the same ---
     const mainSkillFilterContainer = document.querySelector('.main-skill-filters');
     const subSkillFilterContainer = document.querySelector('.sub-skill-filters');
     const projectItems = document.querySelectorAll('.project-item');
     const hideTimeouts = new Map();
 
-    // --- Full-Screen Zoom Overlay Elements ---
     const fullScreenZoomOverlay = document.getElementById('fullScreenZoomOverlay');
     const fullScreenZoomImage = document.getElementById('fullScreenZoomImage');
     let zoomHideTimeout = null;
 
-    // --- Initial Setup ---
     const allProjectsButton = mainSkillFilterContainer.querySelector('[data-filter="all"]');
     if (allProjectsButton) {
         allProjectsButton.classList.add('active');
@@ -233,62 +232,44 @@ document.addEventListener('DOMContentLoaded', () => {
     filterProjects('all');
     subSkillFilterContainer.classList.remove('active');
 
-    // --- Event Listener for Main Skill Filter Buttons ---
     mainSkillFilterContainer.addEventListener('click', (event) => {
         const targetButton = event.target.closest('.filter-btn');
         if (targetButton) {
-            mainSkillFilterContainer.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            mainSkillFilterContainer.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             targetButton.classList.add('active');
-
             const filterValue = targetButton.dataset.filter;
-
             if (filterValue === 'python') {
                 subSkillFilterContainer.classList.add('active');
-                subSkillFilterContainer.querySelectorAll('.filter-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
+                subSkillFilterContainer.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
                 filterProjects('python');
             } else {
                 subSkillFilterContainer.classList.remove('active');
-                subSkillFilterContainer.querySelectorAll('.filter-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
+                subSkillFilterContainer.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
                 filterProjects(filterValue);
             }
         }
     });
 
-    // --- Event Listener for Sub-Skill Filter Buttons ---
     subSkillFilterContainer.addEventListener('click', (event) => {
         const targetButton = event.target.closest('.filter-btn');
         if (targetButton) {
-            subSkillFilterContainer.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            subSkillFilterContainer.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             targetButton.classList.add('active');
-
             mainSkillFilterContainer.querySelector('[data-filter="python"]').classList.add('active');
-
             const filterValue = targetButton.dataset.filter;
             filterProjects(filterValue);
         }
     });
 
-    // --- Main Filtering Function (Remains the same) ---
     function filterProjects(selectedFilter) {
         let visibleItemsCount = 0;
-
         projectItems.forEach(item => {
             const itemSkills = item.dataset.skills ? item.dataset.skills.split(' ') : [];
             const isVisible = (selectedFilter === 'all') || itemSkills.includes(selectedFilter);
-
             if (hideTimeouts.has(item)) {
                 clearTimeout(hideTimeouts.get(item));
                 hideTimeouts.delete(item);
             }
-
             if (isVisible) {
                 if (item.style.display === 'none') {
                     item.style.display = 'flex';
@@ -297,7 +278,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.classList.remove('hidden');
                 item.classList.add('visible');
                 visibleItemsCount++;
-
                 item.querySelectorAll('.skill-btn').forEach(skillBtn => {
                     if (skillBtn.dataset.filter === selectedFilter) {
                         skillBtn.classList.add('active');
@@ -305,203 +285,194 @@ document.addEventListener('DOMContentLoaded', () => {
                         skillBtn.classList.remove('active');
                     }
                 });
-
             } else {
                 item.classList.remove('visible');
                 item.classList.add('hidden');
-
                 const timeoutId = setTimeout(() => {
                     if (item.classList.contains('hidden')) {
                         item.style.display = 'none';
                     }
                     hideTimeouts.delete(item);
                 }, 400);
-
                 hideTimeouts.set(item, timeoutId);
-
-                item.querySelectorAll('.skill-btn').forEach(skillBtn => {
-                    skillBtn.classList.remove('active');
-                });
+                item.querySelectorAll('.skill-btn').forEach(skillBtn => skillBtn.classList.remove('active'));
             }
         });
-
         projectItems.forEach(item => {
             if (item.classList.contains('visible')) {
-                if (visibleItemsCount === 1) {
-                    item.classList.add('single-item');
-                } else {
-                    item.classList.remove('single-item');
-                }
+                item.classList.toggle('single-item', visibleItemsCount === 1);
             } else {
                 item.classList.remove('single-item');
             }
         });
     }
 
-    // --- Hover Image Preview Functionality with Navigation & Full-Screen Zoom ---
+    // --- NEW DYNAMIC IMAGE PREVIEW LOGIC ---
 
-    // Define constants for preview behavior (MATCHES CSS)
-    const IMAGES_PER_PAGE = 4;
     const IMAGE_WIDTH = 70;
-    const IMAGE_GAP = 5;
+    const IMAGE_GAP_SCROLLER = 5;
+    const ARROW_WIDTH = 25;
+    const POPUP_GAP_ARROWS = 5;
+    const POPUP_PADDING = 8;
 
     document.querySelectorAll('.view-images-btn').forEach(button => {
         const imagePreviewPopup = button.querySelector('.image-preview-popup');
-        let imagesLoaded = false;
         let currentImagePreviewIndex = 0;
         let imageUrls = [];
+        let IMAGES_PER_VIEW_DYNAMIC = 4; // Default value
 
         let previewScroller;
         let prevArrow, nextArrow;
 
-        // Function to update the visible images in the preview popup
         function updatePreviewDisplay() {
-            if (!previewScroller) {
-                console.warn("previewScroller is null in updatePreviewDisplay. Images likely not loaded.");
-                return;
-            }
+            if (!previewScroller || imageUrls.length === 0) return;
 
-            const offset = -currentImagePreviewIndex * (IMAGE_WIDTH + IMAGE_GAP);
+            const itemFullWidth = IMAGE_WIDTH + IMAGE_GAP_SCROLLER;
+            const offset = -(currentImagePreviewIndex * itemFullWidth);
             previewScroller.style.transform = `translateX(${offset}px)`;
 
             if (prevArrow) {
                 prevArrow.style.visibility = currentImagePreviewIndex > 0 ? 'visible' : 'hidden';
             }
             if (nextArrow) {
-                nextArrow.style.visibility = currentImagePreviewIndex < (imageUrls.length - IMAGES_PER_PAGE) ? 'visible' : 'hidden';
+                nextArrow.style.visibility = (currentImagePreviewIndex + IMAGES_PER_VIEW_DYNAMIC) < imageUrls.length ? 'visible' : 'hidden';
             }
-            console.log(`Updated preview for ${button.dataset.projectId || 'Unknown'}: Index ${currentImagePreviewIndex}, Prev Arrow: ${prevArrow ? prevArrow.style.visibility : 'N/A'}, Next Arrow: ${nextArrow ? nextArrow.style.visibility : 'N/A'}`);
         }
 
-        // Mouseenter event for the "View Images" button (to show the preview strip)
-        button.addEventListener('mouseenter', () => {
-            // Check if popup element was found
-            if (!imagePreviewPopup) {
-                console.error(`Error: image-preview-popup not found for button with data-project-id: ${button.dataset.projectId || 'N/A'}`);
-                return; // Exit if popup not found
-            }
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
 
-            if (!imagesLoaded) {
-                const imagesString = button.dataset.images;
-                if (imagesString) {
-                    imageUrls = imagesString.split(',').map(url => url.trim());
-                    console.log(`Attempting to load images for ${button.dataset.projectId || 'Unknown'}. URLs found:`, imageUrls);
-
-                    previewScroller = document.createElement('div');
-                    previewScroller.classList.add('image-preview-scroller');
-
-                    imageUrls.forEach(url => {
-                        const img = document.createElement('img');
-                        img.src = url;
-                        img.alt = `Project Screenshot - ${url.substring(url.lastIndexOf('/') + 1)}`;
-                        previewScroller.appendChild(img);
-                        console.log(`Appended image: ${url}`);
-
-                        // --- Full-Screen Zoom Listeners ---
-                        img.addEventListener('mouseenter', (e) => {
-                            clearTimeout(zoomHideTimeout);
-                            fullScreenZoomImage.src = e.target.src;
-                            fullScreenZoomOverlay.classList.add('active');
-                            console.log('Full-screen zoom overlay activated for:', e.target.src);
-                        });
-
-                        img.addEventListener('mouseleave', () => {
-                            zoomHideTimeout = setTimeout(() => {
-                                fullScreenZoomOverlay.classList.remove('active');
-                                console.log('Full-screen zoom overlay deactivated.');
-                            }, 50);
-                        });
-                    });
-
-                    console.log(`Project: ${button.dataset.projectId || 'Unknown'}, Image URLs count: ${imageUrls.length}, IMAGES_PER_PAGE: ${IMAGES_PER_PAGE}`);
-                    console.log(`Condition for arrows: ${imageUrls.length > IMAGES_PER_PAGE}`);
-
-                    if (imageUrls.length > IMAGES_PER_PAGE) {
-                        prevArrow = document.createElement('button');
-                        prevArrow.classList.add('preview-nav-arrow', 'prev');
-                        prevArrow.textContent = '‹';
-                        prevArrow.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            if (currentImagePreviewIndex > 0) {
-                                currentImagePreviewIndex--;
-                                updatePreviewDisplay();
-                            }
-                        });
-
-                        nextArrow = document.createElement('button');
-                        nextArrow.classList.add('preview-nav-arrow', 'next');
-                        nextArrow.textContent = '›';
-                        nextArrow.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            if (currentImagePreviewIndex < (imageUrls.length - IMAGES_PER_PAGE)) {
-                                currentImagePreviewIndex++;
-                                updatePreviewDisplay();
-                            }
-                        });
-
-                        // Clear existing content to prevent duplicates if `imagesLoaded` logic fails
-                        imagePreviewPopup.innerHTML = ''; 
-                        imagePreviewPopup.appendChild(prevArrow);
-                        imagePreviewPopup.appendChild(previewScroller);
-                        imagePreviewPopup.appendChild(nextArrow);
-
-                        console.log("Arrows and scroller appended to popup.");
-
-                    } else {
-                        // Clear existing content for consistency
-                        imagePreviewPopup.innerHTML = '';
-                        imagePreviewPopup.appendChild(previewScroller);
-                        console.log("Only scroller appended (less than or equal to 4 images), no arrows.");
-                    }
-
-                    imagesLoaded = true; // Mark as loaded only after all appends
-                } else {
-                    console.warn(`No data-images attribute found for button: ${button.dataset.projectId || 'N/A'}`);
+            document.querySelectorAll('.image-preview-popup.active-popup').forEach(activePopup => {
+                if (activePopup !== imagePreviewPopup) {
+                    activePopup.classList.remove('active-popup');
                 }
-            }
-            currentImagePreviewIndex = 0;
-            updatePreviewDisplay();
-        });
+            });
 
-        // Mouseleave event for the "View Images" button (to hide the preview strip)
-        button.addEventListener('mouseleave', () => {
-            currentImagePreviewIndex = 0;
-            updatePreviewDisplay();
+            const willOpen = !imagePreviewPopup.classList.contains('active-popup');
+            imagePreviewPopup.classList.toggle('active-popup');
+
+            if (willOpen) {
+                if (imagePreviewPopup.dataset.imagesLoaded !== 'true') {
+                    const imagesString = button.dataset.images;
+                    if (imagesString) {
+                        imageUrls = imagesString.split(',').map(url => url.trim());
+                        IMAGES_PER_VIEW_DYNAMIC = parseInt(button.dataset.imagesPerView || '4', 10);
+
+                        const totalImages = imageUrls.length;
+                        const visibleImageCount = Math.min(totalImages, IMAGES_PER_VIEW_DYNAMIC);
+                        const needsArrows = totalImages > IMAGES_PER_VIEW_DYNAMIC;
+                        
+                        imagePreviewPopup.innerHTML = ''; // Clear previous content
+
+                        // Dynamically calculate and set the popup's width
+                        let popupWidth = (IMAGE_WIDTH * visibleImageCount) + (IMAGE_GAP_SCROLLER * (visibleImageCount - 1)) + (POPUP_PADDING * 2) + 2;
+                        if (needsArrows) {
+                            popupWidth += (ARROW_WIDTH * 2) + (POPUP_GAP_ARROWS * 2);
+                        }
+                        imagePreviewPopup.style.width = `${popupWidth}px`;
+
+                        // Create and add images to a scroller element
+                        previewScroller = document.createElement('div');
+                        previewScroller.classList.add('image-preview-scroller');
+                        imageUrls.forEach(url => {
+                            const img = document.createElement('img');
+                            img.src = url;
+                            img.alt = 'Project Screenshot';
+                            img.addEventListener('mouseenter', (e) => {
+                                clearTimeout(zoomHideTimeout);
+                                fullScreenZoomImage.src = e.target.src;
+                                fullScreenZoomOverlay.classList.add('active');
+                            });
+                            img.addEventListener('mouseleave', () => {
+                                zoomHideTimeout = setTimeout(() => fullScreenZoomOverlay.classList.remove('active'), 50);
+                            });
+                            previewScroller.appendChild(img);
+                        });
+
+                        // Add arrows only if needed
+                        if (needsArrows) {
+                            prevArrow = document.createElement('button');
+                            prevArrow.classList.add('preview-nav-arrow', 'prev');
+                            prevArrow.textContent = '‹';
+                            prevArrow.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                if (currentImagePreviewIndex > 0) {
+                                    currentImagePreviewIndex--;
+                                    updatePreviewDisplay();
+                                }
+                            });
+
+                            nextArrow = document.createElement('button');
+                            nextArrow.classList.add('preview-nav-arrow', 'next');
+                            nextArrow.textContent = '›';
+                            nextArrow.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                if ((currentImagePreviewIndex + IMAGES_PER_VIEW_DYNAMIC) < totalImages) {
+                                    currentImagePreviewIndex++;
+                                    updatePreviewDisplay();
+                                }
+                            });
+
+                            imagePreviewPopup.appendChild(prevArrow);
+                            imagePreviewPopup.appendChild(previewScroller);
+                            imagePreviewPopup.appendChild(nextArrow);
+                        } else {
+                            imagePreviewPopup.appendChild(previewScroller);
+                            prevArrow = null;
+                            nextArrow = null;
+                        }
+                        
+                        imagePreviewPopup.dataset.imagesLoaded = 'true';
+                    }
+                }
+                currentImagePreviewIndex = 0;
+                requestAnimationFrame(updatePreviewDisplay);
+            } else {
+                 imagePreviewPopup.dataset.imagesLoaded = 'false';
+                 imagePreviewPopup.innerHTML = '';
+            }
         });
     });
 
-    // --- Event listeners for the full-screen zoom overlay itself ---
+    // --- Full-screen zoom and closing logic (remains the same) ---
     if (fullScreenZoomOverlay) {
-        fullScreenZoomOverlay.addEventListener('mouseenter', () => {
-            clearTimeout(zoomHideTimeout);
-        });
-
+        fullScreenZoomOverlay.addEventListener('mouseenter', () => clearTimeout(zoomHideTimeout));
         fullScreenZoomOverlay.addEventListener('mouseleave', () => {
-            zoomHideTimeout = setTimeout(() => {
-                fullScreenZoomOverlay.classList.remove('active');
-            }, 50);
+            zoomHideTimeout = setTimeout(() => fullScreenZoomOverlay.classList.remove('active'), 50);
         });
-
         fullScreenZoomOverlay.addEventListener('click', () => {
             fullScreenZoomOverlay.classList.remove('active');
             clearTimeout(zoomHideTimeout);
         });
     }
 
+    document.addEventListener('click', (event) => {
+        document.querySelectorAll('.image-preview-popup.active-popup').forEach(activePopup => {
+            const button = activePopup.closest('.view-images-btn');
+            if (button && !button.contains(event.target) && !activePopup.contains(event.target)) {
+                activePopup.classList.remove('active-popup');
+                activePopup.dataset.imagesLoaded = 'false';
+                activePopup.innerHTML = '';
+            }
+        });
+    });
+
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && fullScreenZoomOverlay && fullScreenZoomOverlay.classList.contains('active')) {
-            fullScreenZoomOverlay.classList.remove('active');
-            clearTimeout(zoomHideTimeout);
+        if (e.key === 'Escape') {
+             document.querySelectorAll('.image-preview-popup.active-popup').forEach(activePopup => {
+                activePopup.classList.remove('active-popup');
+                activePopup.dataset.imagesLoaded = 'false';
+                activePopup.innerHTML = '';
+            });
+            if (fullScreenZoomOverlay.classList.contains('active')) {
+                fullScreenZoomOverlay.classList.remove('active');
+            }
         }
     });
 
     filterProjects('all');
 });
-
-
-
 
 /* ===============================
     Expertise Section - Chart.js Implementation
@@ -517,24 +488,24 @@ function createBarChart(ctx, labels, data, chartTitle) {
         myCharts[ctx.canvas.id].destroy();
     }
 
-    const isDarkMode = document.body.classList.contains('dark');
-    const textColor = isDarkMode ? '#e0e0e0' : '#333';
-    const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-    const barColors = isDarkMode ?
-        [
-            'rgba(120, 180, 255, 0.8)', // Light Blue
-            'rgba(200, 150, 255, 0.8)', // Light Purple
-            'rgba(150, 255, 200, 0.8)', // Light Green
-            'rgba(255, 180, 120, 0.8)', // Light Orange
-            'rgba(255, 120, 180, 0.8)'  // Light Pink
-        ] :
-        [
-            'rgba(75, 192, 192, 0.8)',  // Teal
-            'rgba(153, 102, 255, 0.8)', // Purple
-            'rgba(255, 99, 132, 0.8)',  // Red
-            'rgba(54, 162, 235, 0.8)',  // Blue
-            'rgba(255, 206, 86, 0.8)'   // Yellow
-        ];
+    // --- IMPORTANT: FORCING ALL CHART COLORS TO LIGHT MODE AESTHETIC ---
+    // These colors will now be used regardless of the overall website theme.
+    const textColor = '#333'; // Dark text for titles, labels, legends (like light mode)
+    const gridColor = 'rgba(0, 0, 0, 0.1)'; // Subtle dark grid lines (like light mode)
+    const tickColor = '#333'; // Dark tick labels (like light mode)
+
+    const tooltipBg = 'rgba(255, 255, 255, 0.9)'; // Light tooltip background (like light mode)
+    const tooltipText = '#333'; // Dark tooltip text (like light mode)
+
+    const barColors = [ // Your preferred 'light mode' bar colors
+        'rgba(75, 192, 192, 0.8)',  // Teal
+        'rgba(153, 102, 255, 0.8)', // Purple
+        'rgba(255, 99, 132, 0.8)',  // Red
+        'rgba(54, 162, 235, 0.8)',  // Blue
+        'rgba(255, 206, 86, 0.8)'   // Yellow
+    ];
+    // --- END FORCED CHART COLORS ---
+
 
     myCharts[ctx.canvas.id] = new Chart(ctx, { // Store the chart instance
         type: 'bar',
@@ -544,7 +515,7 @@ function createBarChart(ctx, labels, data, chartTitle) {
                 {
                     label: 'Proficiency (0 to 10)',
                     data: data,
-                    backgroundColor: barColors.slice(0, labels.length), // Use appropriate number of colors
+                    backgroundColor: barColors.slice(0, labels.length), // Use forced light mode colors
                     borderColor: barColors.slice(0, labels.length).map(color => color.replace('0.8', '1')),
                     borderWidth: 1,
                     borderRadius: 5,
@@ -557,15 +528,14 @@ function createBarChart(ctx, labels, data, chartTitle) {
             indexAxis: 'y', // Makes bars horizontal
             plugins: {
                 legend: {
-                    display: true, // Set to true to display legend
-                    position: 'top', // Position the legend at the top
+                    display: true,
+                    position: 'top',
                     labels: {
-                        color: textColor, // Legend text color
+                        color: textColor, // Uses forced dark text
                         font: {
                             size: 14,
                             weight: 'bold'
                         },
-                        // Custom labels to show skill names for colors
                         generateLabels: function(chart) {
                             const data = chart.data;
                             if (data.labels.length && data.datasets.length) {
@@ -573,7 +543,7 @@ function createBarChart(ctx, labels, data, chartTitle) {
                                     const backgroundColor = data.datasets[0].backgroundColor[i];
                                     const borderColor = data.datasets[0].borderColor[i];
                                     return {
-                                        text: label, // Use the skill name as the legend text
+                                        text: label,
                                         fillStyle: backgroundColor,
                                         strokeStyle: borderColor,
                                         lineWidth: 1,
@@ -593,7 +563,7 @@ function createBarChart(ctx, labels, data, chartTitle) {
                         size: 16,
                         weight: 'bold',
                     },
-                    color: textColor,
+                    color: textColor, // Uses forced dark text
                 },
                 tooltip: {
                     callbacks: {
@@ -608,9 +578,9 @@ function createBarChart(ctx, labels, data, chartTitle) {
                             return label;
                         }
                     },
-                    backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.7)',
-                    titleColor: textColor,
-                    bodyColor: textColor,
+                    backgroundColor: tooltipBg, // Uses forced light background
+                    titleColor: tooltipText,    // Uses forced dark text
+                    bodyColor: tooltipText,     // Uses forced dark text
                 }
             },
             scales: {
@@ -622,7 +592,7 @@ function createBarChart(ctx, labels, data, chartTitle) {
                     },
                     ticks: {
                         stepSize: 1,
-                        color: textColor,
+                        color: tickColor, // Uses forced dark text
                     },
                     title: {
                         display: true,
@@ -631,52 +601,47 @@ function createBarChart(ctx, labels, data, chartTitle) {
                             size: 14,
                             weight: 'bold',
                         },
-                        color: textColor,
+                        color: textColor, // Uses forced dark text
                     },
                 },
                 y: {
                     grid: {
-                        color: gridColor,
+                        color: gridColor, // Uses forced dark grid lines
                     },
                     ticks: {
-                        color: textColor,
+                        color: tickColor, // Uses forced dark text
                     }
                 },
             },
             animation: {
-                duration: 4000, // Increased duration for slower animation (4 seconds)
-                easing: 'linear', // Changed to linear for more consistent speed
+                duration: 4000,
+                easing: 'linear',
                 x: {
                     easing: 'linear',
                     duration: 4000,
                     from: 0
                 },
                 delay: (context) => {
-                    return context.dataIndex * 500; // Increased delay for staggered "step" effect
+                    return context.dataIndex * 500;
                 },
-                // Custom animation function for "step-by-step" climbing
                 onProgress: function(animation) {
                     const chart = animation.chart;
                     const { ctx } = chart;
-                    const meta = chart.getDatasetMeta(0); // Get metadata for the first dataset
+                    const meta = chart.getDatasetMeta(0);
 
                     meta.data.forEach((bar, index) => {
-                        const value = data[index]; // Actual data value
-                        const currentX = bar.x; // Current animated x position
-
-                        // Calculate the target X position based on the value
+                        const value = data[index];
+                        const currentX = bar.x;
                         const targetX = chart.scales.x.getPixelForValue(value);
 
-                        // If the bar is growing (currentX < targetX) and not at max,
-                        // we can draw a "step"
                         if (currentX < targetX && currentX > chart.scales.x.left) {
                             ctx.save();
                             ctx.fillStyle = bar.options.backgroundColor;
                             ctx.beginPath();
                             ctx.rect(
-                                chart.scales.x.left, // Start from the left of the chart area
-                                bar.y - bar.height / 2, // Center vertically
-                                currentX - chart.scales.x.left, // Current width
+                                chart.scales.x.left,
+                                bar.y - bar.height / 2,
+                                currentX - chart.scales.x.left,
                                 bar.height
                             );
                             ctx.fill();
@@ -685,24 +650,27 @@ function createBarChart(ctx, labels, data, chartTitle) {
                     });
                 },
                 onComplete: function(animation) {
-                    // This function is called when the animation completes
                     const chart = animation.chart;
                     setTimeout(() => {
-                        chart.data.datasets[0].data = data.map(() => 0); // Set all values to 0
-                        chart.update({ duration: 0, lazy: true }); // Update immediately without animation
+                        chart.data.datasets[0].data = data.map(() => 0);
+                        chart.update({ duration: 0, lazy: true });
 
                         setTimeout(() => {
-                            chart.data.datasets[0].data = [...data]; // Set back to actual values
-                            chart.update({ duration: 4000, lazy: true }); // Animate back to full
-                        }, 500); // Small delay before growing again (reset to 0 and start over)
-                    }, 2000); // Pause for 2 seconds before restarting animation
+                            chart.data.datasets[0].data = [...data];
+                            chart.update({ duration: 4000, lazy: true });
+                        }, 500);
+                    }, 2000);
                 }
             }
         },
     });
 }
 
-// Function to create a pie chart with animation
+
+/* ==============================================
+    Function to create a pie chart with animation
+   ============================================== */
+
 function createPieChart(ctx, labels, data, chartTitle) {
     // Destroy existing chart instance if it exists
     if (myCharts[ctx.canvas.id]) {
