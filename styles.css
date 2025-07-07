@@ -739,6 +739,26 @@ body.dark .bar-chart, body.dark .pie-chart-container, body.dark .project-item, b
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+/* --- NEW CSS ADDITION BELOW (for chart containers only) --- */
+
+/* This rule forces the chart container background to be light,
+   even when the overall body is in its default 'dark mode' state (i.e., does NOT have the 'light' class).
+   This is crucial for the dark text *inside* the chart to be visible. */
+body:not(.light) .bar-chart,
+body:not(.light) .pie-chart-container {
+    background-color: #ffffff !important; /* Force a white background for charts */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important; /* Keep a light shadow for consistency */
+}
+
+/* Ensure any HTML text directly within the chart containers (e.g., if you have <h3>) is dark */
+body:not(.light) .bar-chart h3,
+body:not(.light) .pie-chart-container h3 {
+    color: #333 !important; /* Force dark heading color for charts in dark mode */
+}
+
+/* --- END NEW CSS ADDITION --- */
+
+
 .bar-chart h3, .pie-chart-container h3, .project-item h3, .education-item h3, .experience-item h3 {
     color: var(--card-heading-color);
 }
@@ -766,13 +786,16 @@ body.dark .bar-chart, body.dark .pie-chart-container, body.dark .project-item, b
 
 
 /* Ensure chart axes and labels are visible based on theme */
+/* REMINDER: These CSS rules are for *potential* HTML elements created by Chart.js,
+   or for elements *around* the canvas. They generally do NOT affect text
+   drawn directly *inside* the canvas by Chart.js itself.
+   The JS configuration is key for internal canvas text. */
 .chartjs-render-monitor {
-    color: var(--text-color) !important; /* Important to override Chart.js default */
+    color: var(--text-color) !important;
 }
 .chartjs-tooltip-header, .chartjs-tooltip-body {
     color: var(--text-color) !important;
 }
-
 /* ===============================
     Experience Section Styling (Modified for Horizontal Scroll)
 ================================= */
@@ -1278,110 +1301,154 @@ body.dark .skill-btn.active:hover {
     box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3), 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* --- Hover Image Preview Styling --- */
 
-/* Style for the button that contains the popup */
+/* ==================================================
+    Hover Image Preview Styling on View Images Button
+    ================================================== */
+
 .btn-project.view-images-btn {
     overflow: visible; /* Allow the popup to extend beyond the button's bounds */
-    /* Other button styles remain from .btn-project */
 }
 
-/* The actual image preview popup container */
+/* Keyframes for the blinking arrow animation */
+@keyframes blink-animation {
+    50% { opacity: 0.4; }
+}
+
+/* Apply the animation to the next arrow when it has the .blinking class */
+.preview-nav-arrow.blinking {
+    animation: blink-animation 1.5s infinite;
+}
+
+/* Ensure all carousel elements calculate size predictably */
+.image-preview-popup, .image-preview-popup * {
+    box-sizing: border-box;
+}
+
+/* Main popup container */
 .image-preview-popup {
     position: absolute;
-    bottom: 100%; /* Position above the button */
+    bottom: 100%;
     left: 50%;
-    width: 361px; /* Corrected width for 70px images */
     transform: translateX(-50%) translateY(10px);
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 8px;
-    display: flex;
+    display: flex; /* Let flexbox determine the size */
     align-items: center;
-    gap: 5px;
+    gap: 5px; /* Gap between arrows and image viewport */
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+    transition: opacity 0.3s ease, transform 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    white-space: nowrap;
     z-index: 100;
-    pointer-events: none; /* Keep this as it's for the popup itself */
-
-    /* Recalculated width for 70px images: (4 * 70) + (3 * 5) + (2 * 25) + (2 * 8) = 361px */
-    width: 361px; /* Set to the precise calculation for best fit */
-    overflow: hidden;
-    box-sizing: border-box;
+    pointer-events: none;
 }
 
-/* Container for only the images, allowing individual scrolling/navigation */
-.image-preview-scroller {
-    display: flex;
-    gap: 5px; /* Space between images inside scroller */
-    transition: transform 0.3s ease; /* Smooth scrolling animation */
-    /* Ensure scroller does not have any extra margin/padding */
-    margin: 0; 
-    padding: 0;
-}
-
-
-/* When the view-images-btn is hovered, show the popup */
-.btn-project.view-images-btn:hover .image-preview-popup {
+/* This rule makes the popup appear when active */
+.image-preview-popup.active-popup {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(0);
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear; /* Remove the 0.3s delay on visibility */
-    transition-delay: 0s; /* Explicitly set transition-delay to 0s for all properties */
     pointer-events: auto;
 }
 
-/* Style for individual preview images within the popup */
+/* This is the viewport for the images */
+.image-preview-scroller {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* CRUCIAL: This clips the partial images */
+}
+
+/* This inner element contains all images and moves left/right */
+.image-preview-scroller-inner {
+    display: flex;
+    gap: 5px; /* Sets the space between images */
+    transition: transform 0.3s ease;
+}
+
 .image-preview-popup img {
     flex-shrink: 0;
-    width: 70px; /* CONFIRM this is 70px to match JS IMAGE_WIDTH */
+    width: 70px;
     height: 60px;
     object-fit: cover;
     border-radius: 4px;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    /* No individual image hover transform here, as it's handled by full-screen zoom */
 }
 
-/* Navigation Arrows within the preview popup */
+/* Navigation arrows */
 .preview-nav-arrow {
-    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.6);
     color: white;
     border: none;
-    padding: 5px 8px; /* Compact padding for arrows */
+    border-radius: 5px;
+    width: 25px;
+    height: 40px;
+    /* REMOVED: display: none; */
+    display: flex; /* Always display them but control visibility with JS based on state */
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    font-size: 1.2rem; /* Size of the arrow character */
-    border-radius: 4px;
-    transition: background-color 0.2s ease, visibility 0.2s ease; /* Add transition for visibility */
-    flex-shrink: 0; /* Prevent arrows from shrinking */
-    width: 25px; /* Fixed width for arrows */
-    height: 60px; /* Match height of images for vertical alignment */
-    line-height: 60px; /* Center text vertically if only one line */
-    text-align: center; /* Center arrow character */
-    box-sizing: border-box; /* Include padding in width */
-    z-index: 101; /* Ensure arrows are above the scroller, but below overlay */
-    
-    /* Default visibility will be controlled by JS. Set to hidden here to avoid flicker. */
-    visibility: hidden; 
+    flex-shrink: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    /* ADDED: Initial opacity to allow JS to control 'display' behavior visually */
+    opacity: 0;
+    pointer-events: none; /* Make them not clickable when hidden by opacity */
 }
+
+.preview-nav-arrow.visible { /* New class for controlling arrow visibility */
+    opacity: 1;
+    pointer-events: auto;
+}
+
 
 .preview-nav-arrow:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
+
+/* Full screen zoom overlay */
+.full-screen-zoom-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.full-screen-zoom-overlay.active { /* This class will now make the overlay visible */
+    opacity: 1;
+    visibility: visible;
+}
+
+.full-screen-zoom-overlay img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+}
+
 /* Dark mode adjustments for the hover preview */
 body.dark .image-preview-popup {
-    background-color: var(--dark-card-bg); /* Darker background for popup */
+    background-color: var(--dark-card-bg);
     border-color: var(--dark-border-color);
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15); /* Lighter shadow for dark mode */
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
 }
 
 body.dark .image-preview-popup img {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); /* Darker shadow for image itself */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 }
 
 body.dark .preview-nav-arrow {
@@ -1393,37 +1460,37 @@ body.dark .preview-nav-arrow:hover {
     background-color: rgba(255, 255, 255, 0.4);
 }
 
-/* --- Full-Screen Image Zoom Overlay Styling --- */
+/* Full-Screen Image Zoom Overlay Styling (no changes) */
 .full-screen-zoom-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* Dark, semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.9);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Ensure it's on top of everything */
-    opacity: 0; /* Hidden by default */
-    visibility: hidden; /* Hidden by default */
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
     transition: opacity 0.3s ease, visibility 0s linear 0.3s;
-    cursor: zoom-out; /* Indicate it's clickable to close or can be left */
+    cursor: zoom-out;
 }
 
 .full-screen-zoom-overlay.active {
     opacity: 1;
     visibility: visible;
-    transition-delay: 0s; /* Show immediately */
+    transition-delay: 0s;
 }
 
 .full-screen-zoom-overlay img {
-    max-width: 90%; /* Max width of the zoomed image */
-    max-height: 90%; /* Max height of the zoomed image */
-    object-fit: contain; /* Ensure the whole image is visible, scale down if needed */
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-    pointer-events: none; /* Make image itself non-interactive, click on overlay to close */
+    pointer-events: none;
 }
 
 /* Ensure arrows are BLOCK by default for flex container, but hidden by JS */
@@ -1455,7 +1522,7 @@ body.dark .preview-nav-arrow:hover {
     padding: 60px 50px;
     text-align: center;
     min-height: 600px;
-    color: var(--text-color); /* Text color for this section */
+    color: var(--text-color); /* This variable controls general text in this section *outside* the canvas */
 }
 
 .expertise-section h2 {
@@ -1476,7 +1543,7 @@ body.dark .preview-nav-arrow:hover {
 /* Individual chart container styling */
 .bar-chart, .pie-chart-container {
     height: 350px; /* Consistent height for all charts */
-    background: var(--card-bg-color); /* Use CSS variable for background */
+    background: var(--card-bg-color); /* This is the line that makes it dark in dark mode by default */
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -1494,10 +1561,49 @@ body.dark .preview-nav-arrow:hover {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* --- NEW CSS ADDITION BELOW --- */
+
+/* This rule forces the chart container background to be light,
+   even when the overall body is in 'dark mode' (i.e., does NOT have the 'light' class).
+   This makes the dark text inside the chart visible. */
+body:not(.light) .bar-chart,
+body:not(.light) .pie-chart-container {
+    background: #ffffff !important; /* Force a white background for charts in dark theme */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important; /* Keep a light shadow for consistency */
+    color: #333 !important; /* Ensures any HTML text *directly within* these containers is dark */
+}
+
+/* If your overall theme switches by adding/removing a 'dark' class instead of 'light' */
+/* body.dark .bar-chart, */
+/* body.dark .pie-chart-container { */
+/* background: #ffffff !important; */
+/* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important; */
+/* color: #333 !important; */
+/* } */
+
 /* Specific styling for chart canvases within their containers */
 .bar-chart canvas, .pie-chart-container canvas {
     width: 100% !important; /* Ensure canvas fills container */
     height: 100% !important;
+    /* REMINDER: CSS cannot style content drawn *inside* the canvas.
+       The Chart.js text colors were already set to dark in your JavaScript
+       in the previous step, so combined with the light background above,
+       they should now be visible. */
+}
+
+/* Attempting to target common Chart.js generated HTML elements (if they are not drawn on canvas) */
+.chartjs-tooltip {
+    color: #333 !important; /* Force dark tooltip text */
+    background-color: rgba(255, 255, 255, 0.9) !important; /* Force light tooltip background */
+    border-color: #333 !important; /* Force dark tooltip border */
+}
+
+.chartjs-legend {
+    color: #333 !important; /* Force dark HTML legend text */
+}
+
+.chartjs-title, .chartjs-axis-title {
+    color: #333 !important; /* Force dark HTML titles if Chart.js creates them as HTML */
 }
 
 /* ===============================
