@@ -2127,3 +2127,147 @@ body.dark .icon /* Dark mode shadow for icons */
         overflow-x: auto;
     }
 }
+/* ---------------------------------------------------
+   Targeting the Dark/Light Mode Toggle for Mobile
+   --------------------------------------------------- */
+@media (max-width: 768px) {
+    /* Ensure the theme toggle button is always visible and accessible */
+    .theme-toggle-btn {
+        display: block; /* Make sure it's always visible */
+        position: absolute; /* Position it absolutely within the nav or body */
+        top: 25px; /* Adjust top padding for vertical alignment, matching sticky-nav's top */
+        right: 20px; /* Position it to the right */
+        z-index: 1001; /* Ensure it's above other content and the sticky nav */
+        font-size: 1.8em; /* Make it larger and easier to tap */
+        background-color: transparent; /* Keep background transparent unless desired */
+        border: none; /* No border by default */
+        padding: 5px; /* Add padding for a larger hit area */
+        cursor: pointer;
+        /* Inherit color and transition from global theme-toggle-btn rules */
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Adjust the sticky-nav padding to make space for the button
+       and prevent it from overlapping existing nav elements like "About" if visible */
+    .sticky-nav {
+        padding-right: 60px; /* Create space on the right for the theme toggle */
+        /* If you have a hamburger menu, ensure this padding doesn't conflict with it */
+    }
+
+    /* If you hide .nav-links entirely, ensure theme-icon is not nested inside it
+       or apply specific rules to override its parent's display: none.
+       Based on your HTML, it IS directly inside nav-links. This means we need
+       to adjust the nav-links behavior OR move the theme-icon out.
+
+       Given your current HTML structure:
+       <ul class="nav-links" id="navLinks">
+           <li><button id="theme-icon" class="theme-toggle-btn">☀️</button></li>
+           <li><a href="#about">...</a></li>
+           ...
+       </ul>
+
+       AND your existing CSS line:
+       .navbar .nav-links { display: none; } (Assuming .navbar is your .sticky-nav)
+
+       This means the theme button IS hidden. We need to override that specifically for the theme button.
+    */
+    .nav-links li:first-child { /* Target the list item containing the theme button */
+        display: block; /* Ensure the list item is displayed */
+    }
+
+    /* Re-evaluate your .navbar/.sticky-nav's .nav-links display for mobile.
+       If you intend for *only* the theme toggle to be visible and the other links hidden,
+       you'll need to modify how .nav-links itself is handled.
+       However, if you're using a "hamburger menu" system, your .nav-links *should* be
+       display: none; until the hamburger menu is clicked.
+
+       Let's assume you want the theme icon *always* visible, but other links hidden initially.
+       The best approach is to move the theme-icon out of `.nav-links` in your HTML,
+       or apply a stronger override.
+    */
+
+    /* --- IMPORTANT: Adjustments for the Section 1 (Hero Section) --- */
+    .section-1 {
+        flex-direction: column; /* Stack photo and text vertically */
+        text-align: center; /* Center align content */
+        padding: 80px 20px; /* Adjust padding for smaller screens */
+        min-height: auto; /* Allow height to adjust to content */
+        align-items: center; /* Center items when stacked */
+        gap: 20px; /* Reduce gap between photo and text */
+    }
+
+    .section-1 .photo {
+        margin-bottom: 20px; /* Add space below the photo */
+    }
+
+    .section-1 .content {
+        padding-left: 0; /* Remove left padding from content on mobile */
+        text-align: center; /* Center text within the content div */
+    }
+
+    .content h1 {
+        flex-direction: column; /* Stack "Hi, I'm Vishal" and rotating text */
+        align-items: center; /* Center them when stacked */
+        font-size: 1.8em; /* Adjust overall heading size for mobile */
+        margin-bottom: 10px; /* Reduce space below heading */
+    }
+
+    .static {
+        font-size: 1.1em; /* Ensure static text is proportionate */
+        margin-bottom: 5px; /* Add small margin below static text if stacked */
+    }
+
+    .rotating-text {
+        margin-left: 0; /* Remove left margin when stacked */
+        margin-top: 5px; /* Add a small top margin */
+        min-width: unset; /* Allow width to adapt to content */
+        max-width: 100%; /* Prevent overflow for long words if they are very long */
+        font-size: 1.1em; /* Adjust rotating text size */
+    }
+
+    .cd-words-wrapper {
+        display: block; /* Allow wrapper to take full width */
+        white-space: normal; /* Allow text to wrap if too long for screen */
+        height: 1.5em; /* Give it a fixed height to prevent layout jumps during rotation */
+        overflow: hidden; /* Hide overflow content from words */
+        vertical-align: middle; /* Adjust alignment */
+    }
+
+    .word {
+        font-size: 1em; /* Base font size for individual words (relative to rotating-text) */
+        position: relative; /* Make words position relative on mobile */
+        display: inline-block; /* Ensure they take up space and allow animation */
+        /* Remove absolute positioning for general flow, but animation keyframes still use transform */
+    }
+
+    /* Animation adjustments for smaller screens if needed */
+    @keyframes slideInFromTop {
+        0% { opacity: 0; transform: translateY(-10px); } /* Smaller slide distance */
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideOutToTop {
+        0% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-10px); } /* Smaller slide distance */
+    }
+}
+
+@media (max-width: 480px) {
+    .theme-toggle-btn {
+        top: 20px; /* Slightly adjust for very small screens */
+        right: 15px;
+        font-size: 1.5em; /* Smaller size for very small phones */
+    }
+    .sticky-nav {
+        padding-right: 50px; /* Adjust if button becomes smaller */
+    }
+
+    .content h1 {
+        font-size: 1.6em;
+    }
+    .static, .rotating-text {
+        font-size: 1em;
+    }
+    .cd-words-wrapper {
+        height: 1.4em; /* Adjust height if font size changes */
+    }
+}
