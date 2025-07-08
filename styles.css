@@ -2031,114 +2031,13 @@ body.dark .icon /* Dark mode shadow for icons */
 
 /* ---------------------------------------------------
    2. For Standard Tablets and Medium Phones (e.g., max-width 768px)
-      This breakpoint will attempt to keep all nav links visible on one line.
    --------------------------------------------------- */
 @media (max-width: 768px) {
-    body {
-        padding: 0.5rem; /* Reduced overall page padding */
-        font-size: 14px;
-    }
+    /* ... (Your existing rules for 768px breakpoint, including navigation bar, should be here) ... */
 
-    .card {
-        max-width: 95%; /* Make cards almost full width on tablets */
-        padding: 1.5rem;
-        margin: 1rem auto;
-        border-radius: 25px;
-    }
-
-    h1 { font-size: 2.2em; }
-    h2 { font-size: 1.8em; }
-    h3 { font-size: 1.4em; }
-
-    p, ul, ol, li {
-        font-size: 0.95em;
-    }
-
-    .flex-container {
-        flex-direction: column; /* Stack items vertically */
-    }
-    .grid-layout {
-        grid-template-columns: 1fr; /* Single column layout */
-    }
-
-    /* --- MOBILE NAVIGATION BAR STYLING (Adjusted for horizontal scroll) --- */
-    .sticky-nav {
-        top: 0; /* Always stick to the top on mobile */
-        left: 0;
-        width: 100%;
-        padding: 15px 0; /* Adjust padding for the main fixed bar (no horizontal padding needed here) */
-        border-radius: 0; /* No rounded corners for full width */
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        display: flex; /* Use flexbox for horizontal alignment */
-        justify-content: flex-start; /* Align contents to start */
-        align-items: center;
-        transition: top 0.3s ease;
-        position: fixed; /* Ensure it stays fixed at the top */
-        background-color: var(--nav-bg);
-        z-index: 999; /* Ensure it's above most other content */
-        overflow-x: auto; /* Allow horizontal scrolling */
-        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-        scrollbar-width: none; /* Hide scrollbar for Firefox */
-    }
-    /* Hide scrollbar for Chrome, Safari, Edge */
-    .sticky-nav::-webkit-scrollbar {
-        display: none;
-    }
-
-    .sticky-nav .nav-links {
-        display: flex; /* Ensure links are displayed horizontally */
-        flex-wrap: nowrap; /* PREVENT LINKS FROM WRAPPING */
-        list-style: none;
-        margin: 0;
-        padding: 0 20px; /* Padding for the scrollable area */
-        height: 100%; /* Take full height of the nav */
-        align-items: center; /* Vertically align links */
-    }
-
-    .sticky-nav .nav-links li {
-        flex-shrink: 0; /* Prevent list items from shrinking */
-        margin-right: 15px; /* Space between links */
-        white-space: nowrap; /* Prevent link text from wrapping */
-    }
-
-    .sticky-nav .nav-links li:last-child {
-        margin-right: 20px; /* Ensure last item has padding on the right */
-    }
-
-    .sticky-nav .nav-links a {
-        color: var(--text-color);
-        text-decoration: none;
-        font-size: 0.9em; /* Significantly reduce font size for readability */
-        padding: 8px 10px; /* Reduced padding for smaller targets */
-        display: block; /* Make entire area clickable */
-        transition: color 0.2s ease;
-    }
-    .sticky-nav .nav-links a:hover,
-    .sticky-nav .nav-links a.active {
-        color: var(--accent-color);
-    }
-
-    /* Theme Toggle Button within the scrollable nav */
-    .theme-toggle-btn {
-        flex-shrink: 0; /* Prevent it from shrinking */
-        font-size: 1.2em; /* Smaller icon size to fit */
-        padding: 5px; /* Adjust padding */
-        margin-right: 15px; /* Space after the button */
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        z-index: 1001; /* Still high z-index */
-        width: 35px; /* Fixed size */
-        height: 35px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-
-    /* --- Section 1 (Hero Section) Adjustments --- */
+    /* --- IMPORTANT: Adjustments for the Section 1 (Hero Section) --- */
     .section-1 {
-        flex-direction: column;
+        flex-direction: column; /* Stacks photo and text vertically */
         text-align: center;
         padding: 80px 20px;
         min-height: auto;
@@ -2154,35 +2053,54 @@ body.dark .icon /* Dark mode shadow for icons */
         padding-left: 0;
         text-align: center;
     }
+
     .content h1 {
-        flex-direction: column;
-        align-items: center;
-        font-size: 1.8em;
+        display: flex; /* Make h1 a flex container */
+        flex-direction: row; /* CRITICAL: Keep children on the SAME LINE */
+        flex-wrap: nowrap; /* CRITICAL: Prevent text from wrapping onto a new line */
+        align-items: flex-end; /* Align items to the bottom (good for emoji/text alignment) */
+        justify-content: center; /* Center the entire line horizontally */
+        font-size: 1.8em; /* Overall heading size */
         margin-bottom: 10px;
+        text-align: center; /* Ensure the text aligns within its space */
     }
+
     .static {
-        font-size: 1.1em;
-        margin-bottom: 5px;
+        flex-shrink: 0; /* Prevent this part from shrinking too much */
+        font-size: 1.1em; /* Ensure static text is proportionate */
+        margin-bottom: 0; /* Remove vertical margin as they are on the same line */
+        white-space: nowrap; /* Keep the static text on one line */
     }
+
     .rotating-text {
-        margin-left: 0;
-        margin-top: 5px;
-        min-width: unset;
-        max-width: 100%;
-        font-size: 1.1em;
+        margin-left: 5px; /* Add a small margin to separate from static text */
+        margin-top: 0; /* Remove vertical margin */
+        flex-grow: 1; /* Allow it to take available space */
+        min-width: 0; /* Allow content to shrink if needed (with overflow hidden) */
+        max-width: unset; /* Don't restrict max-width here */
+        font-size: 1.1em; /* Adjust rotating text size */
+        overflow: hidden; /* CRITICAL: Hide content that overflows */
+        /* text-overflow: ellipsis; /* Optional: Add ellipsis for truncated text if not animating */
+        white-space: nowrap; /* CRITICAL: Keep the entire rotating text container on one line */
     }
+
     .cd-words-wrapper {
-        display: block;
-        white-space: normal;
-        height: 1.5em;
-        overflow: hidden;
-        vertical-align: middle;
+        display: inline-block; /* Make it inline-block for proper flow within the line */
+        white-space: nowrap; /* CRITICAL: Keep the individual words on one line within the wrapper */
+        height: 1.5em; /* Fixed height for animation */
+        overflow: hidden; /* Hide overflowing parts of words during animation */
+        vertical-align: bottom; /* Align with the baseline of surrounding text */
     }
+
     .word {
-        font-size: 1em;
-        position: relative;
-        display: inline-block;
+        font-size: 1em; /* Base font size for individual words */
+        position: absolute; /* Keep absolute for animation */
+        display: inline-block; /* Ensure they render as blocks for animation */
+        left: 0; /* Reset position for absolute positioning */
+        top: 0;
     }
+
+    /* Animation adjustments for smaller screens if needed */
     @keyframes slideInFromTop {
         0% { opacity: 0; transform: translateY(-10px); }
         100% { opacity: 1; transform: translateY(0); }
@@ -2193,55 +2111,22 @@ body.dark .icon /* Dark mode shadow for icons */
     }
 }
 
+
 /* ---------------------------------------------------
    3. For Mobile Phones (e.g., max-width 480px)
    --------------------------------------------------- */
 @media (max-width: 480px) {
-    body {
-        padding: 0.2rem;
-        font-size: 13px;
-    }
+    /* ... (Your existing rules for 480px breakpoint should be here) ... */
 
-    .card {
-        max-width: 100%;
-        padding: 1rem;
-        margin: 0.8rem auto;
-        border-radius: 15px;
+    /* Hero Section adjustments for very small screens */
+    .content h1 {
+        font-size: 1.4em; /* Smaller font for very small screens */
     }
-
-    h1 { font-size: 1.6em; }
-    h2 { font-size: 1.4em; }
-    h3 { font-size: 1.1em; }
-
-    p, ul, ol, li {
-        font-size: 0.9em;
-        margin-bottom: 0.6em;
+    .static, .rotating-text {
+        font-size: 1em; /* Adjust relative to h1 */
     }
-
-    .card li b {
-        font-size: 0.9em;
-        margin-bottom: 0.4rem;
-    }
-
-    /* Mobile Nav Bar adjustments for very small screens */
-    .sticky-nav {
-        padding: 12px 0; /* Adjust padding for very small screens */
-    }
-    .sticky-nav .nav-links {
-        padding: 0 15px; /* Adjust inner padding for smaller screens */
-    }
-    .sticky-nav .nav-links li {
-        margin-right: 12px;
-    }
-    .sticky-nav .nav-links a {
-        font-size: 0.8em; /* Even smaller font size */
-        padding: 6px 8px;
-    }
-    .theme-toggle-btn {
-        font-size: 1em; /* Smallest icon size */
-        width: 30px;
-        height: 30px;
-        margin-right: 12px;
+    .cd-words-wrapper {
+        height: 1.4em; /* Adjust height if font size changes */
     }
 
     /* Ensure horizontal scrolling is avoided for tables or large blocks */
