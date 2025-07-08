@@ -57,27 +57,102 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', function () {
     const words = document.querySelectorAll('.cd-words-wrapper .word');
     let currentIndex = 0;
+    let rotationInterval; // Declare a variable to hold the interval ID
 
     function changeWord() {
-        // Fade out the current word
-        words[currentIndex].classList.remove('is-visible');
-        words[currentIndex].classList.add('slideOutToTop'); // Apply the new fade-out animation
+        if (!words || words.length === 0) {
+            console.warn("No words found for rotation. Stopping interval.");
+            clearInterval(rotationInterval); // Stop if no words
+            return;
+        }
 
-        // Move to the next word
-        currentIndex = (currentIndex + 1) % words.length;
+        // Remove previous visibility and animation classes
+        words.forEach(word => {
+            word.classList.remove('is-visible', 'slideOutToTop');
+            word.style.display = 'none'; // Explicitly hide
+            word.style.position = 'absolute'; // Maintain position
+            word.style.left = '0';
+            word.style.top = '0';
+        });
 
-        // After the fade-out, make the next word visible with its animation
-        setTimeout(() => {
-            words[currentIndex].classList.remove('slideOutToTop'); // Remove fade-out class
-            words[currentIndex].classList.add('is-visible');
-        }, 700); // This should match the duration of slideOutToTop animation (or be slightly longer)
+        // Fade out the current word (if any was visible)
+        if (words[currentIndex]) {
+            words[currentIndex].classList.add('slideOutToTop');
+            // After the fade-out, make the next word visible with its animation
+            setTimeout(() => {
+                // Ensure the previous word is fully hidden after its animation
+                if (words[currentIndex]) {
+                    words[currentIndex].style.display = 'none';
+                }
+
+                // Move to the next word
+                currentIndex = (currentIndex + 1) % words.length;
+
+                // Make the new word visible
+                if (words[currentIndex]) {
+                    words[currentIndex].classList.remove('slideOutToTop'); // Remove fade-out class if it somehow stuck
+                    words[currentIndex].style.display = 'inline-block'; // Make it visible
+                    words[currentIndex].classList.add('is-visible'); // Trigger slideInFromTop
+                }
+            }, 700); // This should match the duration of slideOutToTop animation (or be slightly longer)
+        } else {
+             // If for some reason words[currentIndex] is null/undefined at start
+             currentIndex = (currentIndex + 1) % words.length;
+             if (words[currentIndex]) {
+                words[currentIndex].classList.remove('slideOutToTop');
+                words[currentIndex].style.display = 'inline-block';
+                words[currentIndex].classList.add('is-visible');
+             }
+        }
     }
 
-    // Initialize the first word to be visible
-    words[currentIndex].classList.add('is-visible');
+    // Initialize the first word to be visible right away
+    if (words.length > 0) {
+        words[currentIndex].classList.add('is-visible');
+        words[currentIndex].style.display = 'inline-block'; // Ensure initial visibility
+        words[currentIndex].style.position = 'relative'; // Make it flow initially
+    }
 
-    // Change words every 2.5 seconds (adjusted timing)
-    setInterval(changeWord, 2500); // Reduced from 3000ms to 2500ms for quicker change
+
+    // Only start interval if there's more than one word to rotate
+    if (words.length > 1) {
+        rotationInterval = setInterval(changeWord, 2500); // Change words every 2.5 seconds
+    } else if (words.length === 1) {
+        // If only one word, ensure it's visible and static
+        words[0].classList.add('is-visible');
+        words[0].style.display = 'inline-block';
+        words[0].style.position = 'relative'; // Ensure it's not absolutely positioned if static
+        words[0].classList.remove('word'); // Remove 'word' class to prevent 'display: none' from CSS
+    }
+
+    // Optional: Add an Intersection Observer to pause/resume animation
+    // This is good practice for performance and battery life on mobile
+    const rotatingTextContainer = document.querySelector('.rotating-text');
+    if (rotatingTextContainer && words.length > 1) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (!rotationInterval) { // Resume only if not already running
+                        console.log("Rotating text in view, resuming animation.");
+                        rotationInterval = setInterval(changeWord, 2500);
+                        // Also, ensure the current word is visible on resume
+                        if (words[currentIndex]) {
+                            words[currentIndex].classList.add('is-visible');
+                            words[currentIndex].style.display = 'inline-block';
+                        }
+                    }
+                } else {
+                    if (rotationInterval) { // Pause only if running
+                        console.log("Rotating text out of view, pausing animation.");
+                        clearInterval(rotationInterval);
+                        rotationInterval = null;
+                    }
+                }
+            });
+        }, { threshold: 0.5 }); // Trigger when 50% of the element is visible
+
+        observer.observe(rotatingTextContainer);
+    }
 });
 
 
