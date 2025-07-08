@@ -1975,70 +1975,12 @@ body.dark .icon /* Dark mode shadow for icons */
 
 
 /* ---------------------------------------------------
-   1. For Tablets and Smaller Laptops (e.g., max-width 1024px)
-      This is for screens slightly smaller than typical desktops.
-   --------------------------------------------------- */
-@media (max-width: 1024px) {
-    body {
-        padding: 1.5rem; /* Slightly reduce overall page padding */
-        font-size: 15px; /* Adjust base font size if using 'rem' units */
-    }
-
-    /* General adjustments for cards/containers */
-    .card {
-        max-width: 90%; /* Allow cards to take up more width */
-        padding: 2rem; /* Slightly reduce padding inside cards */
-        margin: 1.5rem auto; /* Adjust vertical spacing between cards */
-    }
-
-    /* Adjust heading sizes */
-    h1 { font-size: 2.5em; }
-    h2 { font-size: 2em; }
-    h3 { font-size: 1.6em; } /* Adjust card h3 size */
-    h4 { font-size: 1.3em; }
-
-    /* Adjust paragraph and list item spacing */
-    p, ul, ol {
-        line-height: 1.5;
-        margin-bottom: 0.8em;
-    }
-
-    /* Adjust bold text inside list items */
-    .card li b {
-        font-size: 1em; /* Make it slightly smaller */
-        margin-bottom: 0.6rem; /* Adjust spacing below bold text */
-    }
-
-    /* If you have a main content wrapper (e.g., a .container) */
-    .container {
-        max-width: 95%; /* Adjust width for main content */
-    }
-
-    /* Any multi-column layouts might need to stack or reduce column count */
-    /* Example for a flex container: */
-    .flex-container {
-        flex-wrap: wrap; /* Allow items to wrap to next line */
-        gap: 15px; /* Adjust gap between items */
-    }
-    /* Example for a grid container: */
-    .grid-layout {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust columns */
-    }
-
-    /* Adjust hero section elements or large banners */
-    .hero-section {
-        padding: 80px 0; /* Reduce padding */
-    }
-}
-
-
-/* ---------------------------------------------------
    2. For Standard Tablets and Medium Phones (e.g., max-width 768px)
-      This is a common breakpoint for landscape tablets and larger phones.
+      This breakpoint is where the desktop navigation will transform to mobile.
    --------------------------------------------------- */
 @media (max-width: 768px) {
     body {
-        padding: 1rem;
+        padding: 0.5rem; /* Reduced overall page padding */
         font-size: 14px;
     }
 
@@ -2046,20 +1988,17 @@ body.dark .icon /* Dark mode shadow for icons */
         max-width: 95%; /* Make cards almost full width on tablets */
         padding: 1.5rem;
         margin: 1rem auto;
-        border-radius: 25px; /* Slightly reduce border-radius */
+        border-radius: 25px;
     }
 
-    /* Further adjust heading sizes */
     h1 { font-size: 2.2em; }
     h2 { font-size: 1.8em; }
-    h3 { font-size: 1.4em; } /* Adjust card h3 size */
+    h3 { font-size: 1.4em; }
 
-    /* Adjust general text sizing */
     p, ul, ol, li {
         font-size: 0.95em;
     }
 
-    /* Layouts often switch to single column or fewer columns */
     .flex-container {
         flex-direction: column; /* Stack items vertically */
     }
@@ -2067,19 +2006,183 @@ body.dark .icon /* Dark mode shadow for icons */
         grid-template-columns: 1fr; /* Single column layout */
     }
 
-    /* Navigation bars often need to change to a "hamburger" menu */
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .navbar .nav-links {
-        display: none; /* Hide traditional nav links */
-        /* You'd then use JavaScript to toggle a mobile menu */
+    /* --- MOBILE NAVIGATION BAR STYLING --- */
+    .sticky-nav {
+        top: 0; /* Always stick to the top on mobile */
+        left: 0;
+        width: 100%;
+        padding: 15px 20px; /* Padding for the main fixed bar */
+        border-radius: 0; /* No rounded corners for full width */
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        display: flex; /* Use flexbox for horizontal alignment within the nav */
+        justify-content: space-between; /* Space out the header content */
+        align-items: center;
+        transition: top 0.3s ease; /* Keep transition for hide/show on scroll (if enabled) */
+        position: fixed; /* Ensure it stays fixed at the top */
+        background-color: var(--nav-bg); /* Use a background variable for consistency */
+        z-index: 999; /* Ensure it's above most other content */
     }
 
-    /* Hide elements that are not essential on smaller screens */
-    .desktop-only-feature {
-        display: none;
+    .nav-header {
+        display: flex; /* Use flexbox to align theme toggle and hamburger */
+        align-items: center;
+        justify-content: flex-end; /* Align elements to the right by default */
+        width: 100%; /* Take full width within the sticky-nav */
+        gap: 15px; /* Space between the theme toggle and hamburger */
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle-btn {
+        position: relative; /* Position relative to its flex container (nav-header) */
+        margin-right: 0; /* No external right margin */
+        font-size: 1.8em; /* Good size for tapping */
+        background-color: transparent;
+        border: none;
+        padding: 5px; /* Increase tap area */
+        cursor: pointer;
+        z-index: 1001; /* High z-index to be on top */
+        width: 40px; /* Fixed size for consistency */
+        height: 40px;
+        display: flex; /* Use flex to center icon within button */
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Hamburger Menu Button */
+    .hamburger-menu {
+        display: flex; /* Show the hamburger menu button */
+        flex-direction: column;
+        justify-content: space-around; /* Space out the bars vertically */
+        width: 30px; /* Width of the hamburger icon */
+        height: 25px; /* Height of the hamburger icon */
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 1000; /* Ensure it's clickable */
+    }
+
+    .hamburger-menu .bar {
+        width: 100%;
+        height: 3px; /* Thickness of each bar */
+        background-color: var(--text-color); /* Color of the bars */
+        border-radius: 5px;
+        transition: all 0.3s ease; /* Smooth animation */
+    }
+
+    /* Hamburger animation when menu is active (transforms into an 'X') */
+    .hamburger-menu.active .bar:nth-child(1) {
+        transform: translateY(11px) rotate(45deg);
+    }
+    .hamburger-menu.active .bar:nth-child(2) {
+        opacity: 0; /* Hide middle bar */
+    }
+    .hamburger-menu.active .bar:nth-child(3) {
+        transform: translateY(-11px) rotate(-45deg);
+    }
+
+    /* Navigation Links (the actual menu that slides down) */
+    .sticky-nav .nav-links {
+        display: none; /* Hidden by default on mobile */
+        flex-direction: column; /* Stack links vertically */
+        position: absolute; /* Position relative to sticky-nav */
+        top: 100%; /* Position right below the main fixed nav bar */
+        left: 0;
+        width: 100%; /* Take full width */
+        background-color: var(--nav-bg); /* Match nav bar background */
+        box-shadow: 0 5px 10px rgba(0,0,0,0.2); /* Shadow for dropdown effect */
+        padding: 20px 0; /* Padding inside the dropdown menu */
+        list-style: none; /* Remove bullet points */
+        margin: 0;
+        transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Smooth slide and fade */
+        transform: translateY(-100%); /* Start off-screen above */
+        opacity: 0; /* Start invisible */
+        pointer-events: none; /* Make it non-interactive when hidden */
+    }
+
+    .sticky-nav .nav-links.active { /* Class added by JS when hamburger is clicked */
+        display: flex; /* Show the menu */
+        transform: translateY(0); /* Slide into view */
+        opacity: 1; /* Fade in */
+        pointer-events: auto; /* Make it interactive */
+    }
+
+    .sticky-nav .nav-links li {
+        text-align: center; /* Center each link */
+        margin-bottom: 15px; /* Space between links */
+    }
+    .sticky-nav .nav-links li:last-child {
+        margin-bottom: 0; /* No margin for the last item */
+    }
+
+    .sticky-nav .nav-links a {
+        color: var(--text-color); /* Inherit text color */
+        text-decoration: none;
+        font-size: 1.2em; /* Larger font for mobile links */
+        padding: 10px 0; /* Padding for tap target */
+        display: block; /* Make the whole area clickable */
+        transition: color 0.2s ease;
+    }
+    .sticky-nav .nav-links a:hover,
+    .sticky-nav .nav-links a.active {
+        color: var(--accent-color); /* Highlight active/hovered link */
+    }
+
+    /* --- Section 1 (Hero Section) Adjustments --- */
+    .section-1 {
+        flex-direction: column; /* Stack photo and text vertically */
+        text-align: center; /* Center align content */
+        padding: 80px 20px; /* Adjust padding for smaller screens */
+        min-height: auto; /* Allow height to adjust to content */
+        align-items: center; /* Center items when stacked */
+        gap: 20px; /* Reduce gap between photo and text */
+        margin-top: 60px; /* Add margin to account for fixed nav bar */
+    }
+
+    .section-1 .photo {
+        margin-bottom: 20px; /* Add space below the photo */
+    }
+    .section-1 .content {
+        padding-left: 0; /* Remove left padding from content on mobile */
+        text-align: center; /* Center text within the content div */
+    }
+    .content h1 {
+        flex-direction: column; /* Stack "Hi, I'm Vishal" and rotating text */
+        align-items: center; /* Center them when stacked */
+        font-size: 1.8em; /* Adjust overall heading size for mobile */
+        margin-bottom: 10px; /* Reduce space below heading */
+    }
+    .static {
+        font-size: 1.1em; /* Ensure static text is proportionate */
+        margin-bottom: 5px; /* Add small margin below static text if stacked */
+    }
+    .rotating-text {
+        margin-left: 0; /* Remove left margin when stacked */
+        margin-top: 5px; /* Add a small top margin */
+        min-width: unset; /* Allow width to adapt to content */
+        max-width: 100%; /* Prevent overflow for long words if they are very long */
+        font-size: 1.1em; /* Adjust rotating text size */
+    }
+    .cd-words-wrapper {
+        display: block; /* Allow wrapper to take full width */
+        white-space: normal; /* Allow text to wrap if too long for screen */
+        height: 1.5em; /* Give it a fixed height to prevent layout jumps during rotation */
+        overflow: hidden; /* Hide overflow content from words */
+        vertical-align: middle; /* Adjust alignment */
+    }
+    .word {
+        font-size: 1em; /* Base font size for individual words (relative to rotating-text) */
+        position: relative; /* Make words position relative on mobile */
+        display: inline-block; /* Ensure they take up space and allow animation */
+    }
+    /* Animation adjustments for smaller screens if needed */
+    @keyframes slideInFromTop {
+        0% { opacity: 0; transform: translateY(-10px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideOutToTop {
+        0% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-10px); }
     }
 }
 
@@ -2090,23 +2193,21 @@ body.dark .icon /* Dark mode shadow for icons */
    --------------------------------------------------- */
 @media (max-width: 480px) {
     body {
-        padding: 0.5rem; /* Minimal page padding */
-        font-size: 13px; /* Smaller base font size for smaller screens */
+        padding: 0.2rem; /* Even less padding */
+        font-size: 13px;
     }
 
     .card {
-        max-width: 100%; /* Cards take full width on mobile */
+        max-width: 100%;
         padding: 1rem;
         margin: 0.8rem auto;
-        border-radius: 15px; /* Smaller border-radius for mobile */
+        border-radius: 15px;
     }
 
-    /* Smallest heading sizes */
-    h1 { font-size: 1.8em; }
-    h2 { font-size: 1.5em; }
-    h3 { font-size: 1.2em; } /* Adjust card h3 size */
+    h1 { font-size: 1.6em; }
+    h2 { font-size: 1.4em; }
+    h3 { font-size: 1.1em; }
 
-    /* Further adjust general text sizing for readability */
     p, ul, ol, li {
         font-size: 0.9em;
         margin-bottom: 0.6em;
@@ -2117,16 +2218,59 @@ body.dark .icon /* Dark mode shadow for icons */
         margin-bottom: 0.4rem;
     }
 
+    /* Mobile Nav Bar adjustments for very small screens */
+    .sticky-nav {
+        padding: 12px 15px;
+    }
+    .theme-toggle-btn {
+        font-size: 1.5em;
+        width: 35px;
+        height: 35px;
+    }
+    .hamburger-menu {
+        width: 28px;
+        height: 22px;
+    }
+    .hamburger-menu .bar {
+        height: 2.5px;
+    }
+    .hamburger-menu.active .bar:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+    .hamburger-menu.active .bar:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+    .sticky-nav .nav-links {
+        padding: 15px 0;
+    }
+    .sticky-nav .nav-links li {
+        margin-bottom: 10px;
+    }
+    .sticky-nav .nav-links a {
+        font-size: 1.1em;
+    }
+
     /* Ensure horizontal scrolling is avoided for tables or large blocks */
     table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
     }
-    .responsive-table-wrapper { /* If you wrap tables in a div */
+    .responsive-table-wrapper {
         overflow-x: auto;
     }
 }
+
+/* Global CSS Variables (Add these to your :root in styles.css if not already present) */
+:root {
+    --nav-bg: #ffffff; /* Light mode nav background */
+    --dark-nav-bg: #1c1c1c; /* Dark mode nav background */
+    --accent-color: #f38375; /* Example accent color for links */
+    --dark-accent-color: #ffee32; /* Example dark mode accent color */
+    --text-color: #333; /* Default text color for light mode */
+    --dark-text-color: #f0f0f0; /* Default text color for dark mode */
+}
+
 /* ---------------------------------------------------
    Targeting the Dark/Light Mode Toggle for Mobile
    --------------------------------------------------- */
