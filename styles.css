@@ -1972,7 +1972,62 @@ body.dark .icon /* Dark mode shadow for icons */
 /* =========================================================================
    Responsive Design Adjustments (Add these sections to the END of your CSS)
    ========================================================================= */
+/* ---------------------------------------------------
+   1. For Tablets and Smaller Laptops (e.g., max-width 1024px)
+      This is for screens slightly smaller than typical desktops.
+   --------------------------------------------------- */
+@media (max-width: 1024px) {
+    body {
+        padding: 1.5rem; /* Slightly reduce overall page padding */
+        font-size: 15px; /* Adjust base font size if using 'rem' units */
+    }
 
+    /* General adjustments for cards/containers */
+    .card {
+        max-width: 90%; /* Allow cards to take up more width */
+        padding: 2rem; /* Slightly reduce padding inside cards */
+        margin: 1.5rem auto; /* Adjust vertical spacing between cards */
+    }
+
+    /* Adjust heading sizes */
+    h1 { font-size: 2.5em; }
+    h2 { font-size: 2em; }
+    h3 { font-size: 1.6em; } /* Adjust card h3 size */
+    h4 { font-size: 1.3em; }
+
+    /* Adjust paragraph and list item spacing */
+    p, ul, ol {
+        line-height: 1.5;
+        margin-bottom: 0.8em;
+    }
+
+    /* Adjust bold text inside list items */
+    .card li b {
+        font-size: 1em; /* Make it slightly smaller */
+        margin-bottom: 0.6rem; /* Adjust spacing below bold text */
+    }
+
+    /* If you have a main content wrapper (e.g., a .container) */
+    .container {
+        max-width: 95%; /* Adjust width for main content */
+    }
+
+    /* Any multi-column layouts might need to stack or reduce column count */
+    /* Example for a flex container: */
+    .flex-container {
+        flex-wrap: wrap; /* Allow items to wrap to next line */
+        gap: 15px; /* Adjust gap between items */
+    }
+    /* Example for a grid container: */
+    .grid-layout {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust columns */
+    }
+
+    /* Adjust hero section elements or large banners */
+    .hero-section {
+        padding: 80px 0; /* Reduce padding */
+    }
+}
 
 /* ---------------------------------------------------
    2. For Standard Tablets and Medium Phones (e.g., max-width 768px)
