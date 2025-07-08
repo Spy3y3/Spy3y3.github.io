@@ -3,28 +3,61 @@
 ================================= */
 document.addEventListener('DOMContentLoaded', () => {
     const stickyNav = document.getElementById('stickyNav');
+    const navLinks = document.getElementById('navLinks');
+    const hamburgerMenu = document.getElementById('hamburgerMenu'); // Get the hamburger button
+
     let lastScrollY = window.scrollY;
 
+    // --- Hamburger Menu Toggle Functionality ---
+    if (hamburgerMenu && navLinks) {
+        hamburgerMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active'); // Toggle menu visibility
+            hamburgerMenu.classList.toggle('active'); // Toggle hamburger icon animation
+            // Disable body scrolling when mobile menu is open
+            document.body.classList.toggle('no-scroll', navLinks.classList.contains('active'));
+        });
+
+        // Close mobile menu when a navigation link is clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    hamburgerMenu.classList.remove('active');
+                    document.body.classList.remove('no-scroll'); // Re-enable scroll
+                }
+            });
+        });
+    }
+
+    // --- Sticky Nav Show/Hide on Scroll (Adjusted for mobile) ---
     window.addEventListener('scroll', () => {
         const currentScrollY = window.scrollY;
 
-        // Hide nav on scroll down, show on scroll up
-        if (currentScrollY > lastScrollY && currentScrollY > 100) {
-            stickyNav.style.top = '-80px'; // Hide navigation further up
+        // Apply hide/show logic ONLY on larger screens (desktop)
+        if (window.innerWidth > 768) {
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                stickyNav.style.top = '-80px'; // Hide navigation by moving it up
+            } else {
+                stickyNav.style.top = '20px'; // Show navigation (original desktop position)
+            }
         } else {
-            stickyNav.style.top = '20px'; // Visible position
+            // On mobile, the nav bar stays fixed at the top (no hide/show on scroll)
+            stickyNav.style.top = '0px';
         }
 
-        lastScrollY = currentScrollY; // Update scroll position
+        lastScrollY = currentScrollY; // Update scroll position for next comparison
 
         // Highlight active navigation link based on scroll position
         const sections = document.querySelectorAll('.section');
         sections.forEach(section => {
-            const sectionTop = section.offsetTop - stickyNav.offsetHeight; // Adjust for sticky nav height
+            // Adjust sectionTop calculation for the fixed nav bar height
+            const navHeight = stickyNav.offsetHeight;
+            const sectionTop = section.offsetTop - navHeight;
             const sectionBottom = sectionTop + section.offsetHeight;
             const navLink = document.querySelector(`.nav-links a[href="#${section.id}"]`);
 
             if (navLink) {
+                // Check if the current scroll position is within this section's bounds
                 if (currentScrollY >= sectionTop && currentScrollY < sectionBottom) {
                     navLink.classList.add('active');
                 } else {
@@ -37,7 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial active link setting on load
     const sections = document.querySelectorAll('.section');
     sections.forEach(section => {
-        const sectionTop = section.offsetTop - stickyNav.offsetHeight;
+        const navHeight = stickyNav.offsetHeight;
+        const sectionTop = section.offsetTop - navHeight;
         const sectionBottom = sectionTop + section.offsetHeight;
         const navLink = document.querySelector(`.nav-links a[href="#${section.id}"]`);
         if (navLink) {
@@ -45,6 +79,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 navLink.classList.add('active');
             } else {
                 navLink.classList.remove('active');
+            }
+        }
+    });
+
+    // --- Close mobile menu if resized to desktop ---
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) { // If screen size becomes desktop
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active'); // Close mobile menu
+                hamburgerMenu.classList.remove('active'); // Reset hamburger icon
+                document.body.classList.remove('no-scroll'); // Re-enable scroll
             }
         }
     });
