@@ -2033,7 +2033,6 @@ body.dark .icon /* Dark mode shadow for icons */
    2. For Standard Tablets and Medium Phones (e.g., max-width 768px)
    --------------------------------------------------- */
 @media (max-width: 768px) {
-    /* ... (Your existing rules for 768px breakpoint, including navigation bar, should be here) ... */
 
     /* --- IMPORTANT: Adjustments for the Section 1 (Hero Section) --- */
     .section-1 {
@@ -2055,50 +2054,69 @@ body.dark .icon /* Dark mode shadow for icons */
     }
 
     .content h1 {
-        display: flex; /* Make h1 a flex container */
-        flex-direction: row; /* CRITICAL: Keep children on the SAME LINE */
-        flex-wrap: nowrap; /* CRITICAL: Prevent text from wrapping onto a new line */
-        align-items: flex-end; /* Align items to the bottom (good for emoji/text alignment) */
-        justify-content: center; /* Center the entire line horizontally */
-        font-size: 1.8em; /* Overall heading size */
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: flex-end; /* Keep this for now, we'll try baseline next if needed */
+        justify-content: center;
+        font-size: 1.8em;
         margin-bottom: 10px;
-        text-align: center; /* Ensure the text aligns within its space */
+        text-align: center;
+
+        /* --- DEBUGGING BORDERS --- */
+        border: 2px solid purple !important; /* See the boundary of the H1 */
+        /* --- END DEBUGGING --- */
     }
 
     .static {
-        flex-shrink: 0; /* Prevent this part from shrinking too much */
-        font-size: 1.1em; /* Ensure static text is proportionate */
-        margin-bottom: 0; /* Remove vertical margin as they are on the same line */
-        white-space: nowrap; /* Keep the static text on one line */
+        flex-shrink: 0;
+        font-size: 1.1em;
+        margin-bottom: 0;
+        white-space: nowrap;
+
+        /* --- DEBUGGING BORDERS --- */
+        border: 1px solid blue !important; /* See the boundary of the static text */
+        /* --- END DEBUGGING --- */
     }
 
     .rotating-text {
-        margin-left: 5px; /* Add a small margin to separate from static text */
-        margin-top: 0; /* Remove vertical margin */
-        flex-grow: 1; /* Allow it to take available space */
-        min-width: 0; /* Allow content to shrink if needed (with overflow hidden) */
-        max-width: unset; /* Don't restrict max-width here */
-        font-size: 1.1em; /* Adjust rotating text size */
-        overflow: hidden; /* CRITICAL: Hide content that overflows */
-        /* text-overflow: ellipsis; /* Optional: Add ellipsis for truncated text if not animating */
-        white-space: nowrap; /* CRITICAL: Keep the entire rotating text container on one line */
+        margin-left: 5px;
+        margin-top: 0;
+        flex-grow: 1;
+        min-width: 0;
+        max-width: unset;
+        font-size: 1.1em;
+        overflow: hidden;
+        white-space: nowrap;
+
+        /* --- DEBUGGING BORDERS --- */
+        border: 1px solid green !important; /* See the boundary of the rotating text wrapper */
+        /* --- END DEBUGGING --- */
     }
 
     .cd-words-wrapper {
-        display: inline-block; /* Make it inline-block for proper flow within the line */
-        white-space: nowrap; /* CRITICAL: Keep the individual words on one line within the wrapper */
-        height: 1.5em; /* Fixed height for animation */
-        overflow: hidden; /* Hide overflowing parts of words during animation */
-        vertical-align: bottom; /* Align with the baseline of surrounding text */
+        display: inline-block;
+        white-space: nowrap;
+        height: 1.5em;
+        overflow: hidden;
+        vertical-align: bottom;
+
+        /* --- DEBUGGING BORDERS --- */
+        border: 1px solid orange !important; /* See the boundary of the words wrapper */
+        /* --- END DEBUGGING --- */
     }
 
     .word {
-        font-size: 1em; /* Base font size for individual words */
-        position: absolute; /* Keep absolute for animation */
-        display: inline-block; /* Ensure they render as blocks for animation */
-        left: 0; /* Reset position for absolute positioning */
+        font-size: 1em;
+        position: absolute;
+        display: inline-block;
+        left: 0;
         top: 0;
-    }
+
+        /* --- DEBUGGING BORDERS --- */
+        border: 1px solid red !important; /* See the boundary of each word */
+        /* --- END DEBUGGING --- */
+
 
     /* Animation adjustments for smaller screens if needed */
     @keyframes slideInFromTop {
