@@ -550,7 +550,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ===============================
-    Expertise Section - Chart.js Implementation
+    Expertise Section - Chart Implementation
 ================================= */
 
 // Store chart instances to destroy them later for theme switching/re-rendering
@@ -606,7 +606,7 @@ function createBarChart(ctx, labels, data, chartTitle) {
                     display: true,
                     position: 'top',
                     labels: {
-                        color: textColor, // Uses forced dark text
+                        color: '#3674B5', // Uses forced dark text
                         font: {
                             size: 14,
                             weight: 'bold'
@@ -638,7 +638,7 @@ function createBarChart(ctx, labels, data, chartTitle) {
                         size: 16,
                         weight: 'bold',
                     },
-                    color: textColor, // Uses forced dark text
+                    color: '#A890FE', // Uses forced dark text
                 },
                 tooltip: {
                     callbacks: {
@@ -667,16 +667,16 @@ function createBarChart(ctx, labels, data, chartTitle) {
                     },
                     ticks: {
                         stepSize: 1,
-                        color: tickColor, // Uses forced dark text
+                        color: '#3674B5', // Uses forced dark text
                     },
                     title: {
                         display: true,
-                        text: 'Proficiency (0-10)',
+                        text: 'Proficiency',
                         font: {
-                            size: 14,
+                            size: 16,
                             weight: 'bold',
                         },
-                        color: textColor, // Uses forced dark text
+                        color: '#A890FE', // Uses forced dark text
                     },
                 },
                 y: {
@@ -684,7 +684,7 @@ function createBarChart(ctx, labels, data, chartTitle) {
                         color: gridColor, // Uses forced dark grid lines
                     },
                     ticks: {
-                        color: tickColor, // Uses forced dark text
+                        color: '#3674B5', // Uses forced dark text
                     }
                 },
             },
@@ -804,7 +804,7 @@ function createPieChart(ctx, labels, data, chartTitle) {
                             size: 14,
                             weight: 'bold',
                         },
-                        color: textColor, // Legend text color adapts to theme
+                        color: '#3674B5', // Legend text color adapts to theme
                         padding: 20,
                     },
                 },
@@ -815,7 +815,7 @@ function createPieChart(ctx, labels, data, chartTitle) {
                         size: 16,
                         weight: 'bold',
                     },
-                    color: textColor,
+                    color: '#A890FE',
                 },
                 tooltip: {
                     callbacks: {
@@ -832,10 +832,10 @@ function createPieChart(ctx, labels, data, chartTitle) {
                     bodyColor: textColor,
                 },
                 datalabels: { // Configuration for chartjs-plugin-datalabels
-                    color: textColor, // Label text color
+                    color: '#333', // Label text color
                     font: {
                         weight: 'bold',
-                        size: 12,
+                        size: 14,
                     },
                     formatter: (value, context) => {
                         const total = context.dataset.data.reduce((a, b) => a + b, 0);
