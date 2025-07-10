@@ -1619,7 +1619,7 @@ body.dark .preview-nav-arrow:hover {
 
 /* Individual chart container styling */
 .bar-chart, .pie-chart-container {
-    height: 350px; /* Consistent height for all charts */
+    height: 400px; /* Consistent height for all charts */
     background: var(--card-bg-color); /* This is the line that makes it dark in dark mode by default */
     border-radius: 15px;
     padding: 20px;
