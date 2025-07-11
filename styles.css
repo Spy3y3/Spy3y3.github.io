@@ -18,6 +18,7 @@
     opacity: 1; /* Start visible */
     visibility: visible; /* Start visible */
     transition: opacity 0.5s ease, visibility 0.5s ease; /* Smooth fade-out effect */
+    /* gap: 0px; /* this line for spacing between images */
 }
 
 /* Class to hide the preloader after content loads */
@@ -1701,9 +1702,9 @@ body.dark .preview-nav-arrow:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-/* ===============================
-    Expertise Section Styling
-================================= */
+/*  ===================================
+    Technical Expertise Section Styling
+    =================================== */
 .expertise-section {
     padding: 60px 50px;
     text-align: center;
@@ -1790,6 +1791,42 @@ body:not(.light) .pie-chart-container {
 
 .chartjs-title, .chartjs-axis-title {
     color: #333 !important; /* Force dark HTML titles if Chart.js creates them as HTML */
+}
+
+/*  =========================================
+    Technical Expertise - GIF Section Styling
+    ========================================= */
+.heading-icon-gif {
+    /* Adjust these values to control the GIF's size */
+    width: 30px; /* Example: set a specific width */
+    height: 30px; /* Example: set a specific height */
+    /* Or use max-width/max-height for responsiveness */
+    /* max-width: 1.5em; */
+    /* max-height: 1.5em; */
+
+    /* Align the GIF vertically with the text */
+    vertical-align: middle; /* Aligns the middle of the GIF with the middle of the text */
+    margin-left: 8px; /* Adds a little space between the text and the GIF */
+}
+
+/* Optional: If you want it to scale nicely with the heading font size */
+.animate-heading .heading-icon-gif {
+    width: 1.2em; /* 1.2 times the current font-size of the heading */
+    height: 1.2em; /* 1.2 times the current font-size of the heading */
+    margin-left: 0.5em; /* Half of the heading font size for margin */
+}
+
+.greeting-emoji-gif {
+    /* Adjust these values to control the GIF's size */
+    width: 45px; /* Example: adjust to be similar to an emoji size */
+    height: 45px; /* Maintain aspect ratio */
+    
+    /* Align the GIF vertically with the text */
+    vertical-align: middle; /* Ensures it sits nicely on the text line */
+    
+    /* Optional: Adjust spacing if needed */
+    margin-right: 2px; /* A little space to the right, before the comma */
+    margin-left: 2px; /* A little space to the left, after "Hi" */
 }
 
 /* ===============================
