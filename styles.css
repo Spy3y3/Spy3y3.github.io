@@ -980,9 +980,52 @@ body.dark {
     --box-shadow: 0 4px 12px rgba(255, 255, 255, 0.08);
 }
 
+/* =========================================================================
+   Professional Experience Card - Date & Duration Alignment
+   ========================================================================= */
 
+.experience-item p.date, .project-item p.date {
+    /* Your existing styles for the date paragraph */
+    font-size: 0.95rem;
+    color: var(--card-text-color); /* Use your defined text color variable */
+    margin-bottom: 10px; /* Space below the date line */
 
+    /* Alignment for the entire line */
+    text-align: left; /* Aligns "Date Range (Duration)" to the right end */
+}
 
+/* Ensure these variables are defined in your :root and body.dark if not already */
+:root {
+    --card-text-color: #333; /* Example light mode card text color */
+}
+body.dark {
+    --card-text-color: #ccc; /* Example dark mode card text color */
+}
+
+.experience-item p.date .date-range-text,
+.project-item p.date .date-range-text {
+    /* Style for the first line (the original date range) */
+    margin-bottom: 5px; /* Small spacing between the date range and duration */
+    /* You can add more styles here if you want it distinct, e.g., font-weight: bold; */
+}
+
+.experience-item p.date .duration-text,
+.project-item p.date .duration-text {
+    /* Style for the second line (the calculated duration) */
+    font-size: 0.85em; /* Slightly smaller font size for the duration */
+    color: var(--secondary-text-color, #666); /* A slightly lighter color for the duration.
+                                                If --secondary-text-color isn't defined, it defaults to #666.
+                                                Consider defining --secondary-text-color in your :root. */
+    opacity: 0.8; /* Make it slightly faded */
+}
+
+/* Ensure this variable is defined in your :root and body.dark if you haven't already */
+:root {
+    --secondary-text-color: #666; /* Example light mode secondary text color */
+}
+body.dark {
+    --secondary-text-color: #999; /* Example dark mode secondary text color */
+}
 
 .projects-container { /* This should still wrap if it's meant to be a grid of projects */
     display: flex;
