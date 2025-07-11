@@ -253,6 +253,97 @@ animatedItems.forEach((item, index) => {
     }
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    // ... (Your existing JavaScript code for sticky nav, rotating text, image preview, etc.) ...
+
+    /* =========================================================================
+       Calculate and Display Duration for Professional Experience Dates
+       ========================================================================= */
+
+    // Helper function to calculate duration in years and months
+    function calculateExperienceDuration(startDateStr, endDateStr) {
+        const monthMap = {
+            'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+            'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+        };
+
+        // Parses a date string like "May 2017" into a Date object (set to the 1st of the month)
+        const parseDateString = (dateString) => {
+            const parts = dateString.split(' ');
+            const monthIndex = monthMap[parts[0]];
+            const year = parseInt(parts[1]);
+            return new Date(year, monthIndex, 1); // Set to the 1st of the month for consistent calculation
+        };
+
+        let startDate = parseDateString(startDateStr);
+        let endDate;
+
+        // Handle 'Present' as the end date
+        if (endDateStr.toLowerCase() === 'present') {
+            endDate = new Date(); // Current date
+            endDate.setDate(1); // Set to 1st of current month for consistency
+        } else {
+            endDate = parseDateString(endDateStr);
+        }
+
+        // Calculate difference in full years and months
+        let years = endDate.getFullYear() - startDate.getFullYear();
+        let months = endDate.getMonth() - startDate.getMonth();
+
+        // Adjust if months difference is negative (e.g., start in Nov, end in Feb next year)
+        if (months < 0) {
+            months += 12; // Add 12 months
+            years--;      // Subtract a year
+        }
+
+        // Special case: If duration is less than 1 full month (e.g., Jan 2020 - Jan 2020), count as 1 month.
+        if (years === 0 && months === 0) {
+            months = 1;
+        }
+
+        let durationParts = [];
+        if (years > 0) {
+            durationParts.push(`${years} year${years > 1 ? 's' : ''}`);
+        }
+        if (months > 0) {
+            durationParts.push(`${months} month${months > 1 ? 's' : ''}`);
+        }
+
+        // Format the output string
+        // If only years, return "X years"
+        if (years > 0 && months === 0) {
+            return `${years} year${years > 1 ? 's' : ''}`;
+        }
+        // If only months (and less than a year), return "X months"
+        if (years === 0 && months > 0) {
+            return `${months} month${months > 1 ? 's' : ''}`;
+        }
+        // Otherwise, join years and months (e.g., "1 year 5 months")
+        return durationParts.join(' ');
+    }
+
+    // Select all date paragraphs within experience items
+    const dateElements = document.querySelectorAll('.experience-item p.date');
+
+    dateElements.forEach(dateElement => {
+        const dateText = dateElement.textContent.trim(); // Get the original date string
+        const parts = dateText.split(' – '); // Split by the dash separator
+
+        if (parts.length === 2) {
+            const startDateStr = parts[0].trim();
+            const endDateStr = parts[1].trim();
+
+            const duration = calculateExperienceDuration(startDateStr, endDateStr);
+
+            // Append the calculated duration to the existing text
+            if (duration) {
+                dateElement.textContent = `${dateText} (${duration})`;
+            }
+        }
+    });
+
+    // ... (Rest of your existing JavaScript code) ...
+});
 
 /* ===============================
     Scroll-triggered Animation for Section Headings
