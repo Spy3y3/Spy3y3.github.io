@@ -1,6 +1,20 @@
-/* ===============================
+/* =========================
+    Preloader Functionality
+   ========================= */
+window.onload = function() {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        // Delay hiding the preloader by 2 seconds (2000 milliseconds)
+        // This gives the animation time to play before the website appears.
+        setTimeout(() => {
+            preloader.classList.add('hidden'); // Add the 'hidden' class to fade it out
+        }, 2500); // You can adjust this duration (in milliseconds) as needed
+    }
+};
+
+/* ====================================
     Sticky Navigation Bar Functionality
-================================= */
+   ==================================== */
 document.addEventListener('DOMContentLoaded', () => {
     const stickyNav = document.getElementById('stickyNav');
     let lastScrollY = window.scrollY;
