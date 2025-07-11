@@ -1,5 +1,71 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
 
+/* =========================================================================
+   Preloader Styling
+   ========================================================================= */
+
+#preloader {
+    position: fixed; /* Fixes it to the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color); /* Use your page's background color here */
+    display: flex; /* Use flexbox to center content */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    z-index: 9999; /* Ensure it's on top of everything else */
+    opacity: 1; /* Start visible */
+    visibility: visible; /* Start visible */
+    transition: opacity 0.5s ease, visibility 0.5s ease; /* Smooth fade-out effect */
+}
+
+/* Class to hide the preloader after content loads */
+#preloader.hidden {
+    opacity: 0; /* Fade out */
+    visibility: hidden; /* Hide completely */
+    pointer-events: none; /* Prevents clicks on the hidden overlay */
+}
+
+/* Style for the GIF image inside the preloader */
+#preloader img {
+    max-width: 80%; /* Ensures the image scales down on smaller screens */
+    max-height: 80%;
+    object-fit: contain; /* Maintains aspect ratio without cropping */
+    /* Add any other desired styling for your image, e.g., border-radius */
+}
+
+/* Ensure --background-color is defined in your :root and body.dark for consistent theming */
+:root {
+    --background-color: #f0f2f5; /* Example light mode background color */
+}
+body.dark {
+    --background-color: #1a1a1a; /* Example dark mode background color */
+}
+
+/* =========================================================================
+   Main Content Wrapper Styling (for post-preloader animation)
+   ========================================================================= */
+
+#main-content-wrapper {
+    /* Initially hide and scale down the content */
+    opacity: 0;
+    transform: scale(0.95); /* Starts slightly zoomed out */
+
+    /* Ensure it fills the screen initially so preloader sits above it */
+    min-height: 100vh; /* Make sure it takes full viewport height */
+    width: 100%;
+
+    /* Define the transition for when it animates in */
+    transition: opacity 1s ease-out, transform 1s ease-out; /* 1-second duration for both fade and zoom */
+}
+
+/* Class to trigger the content animation (added by JS) */
+#main-content-wrapper.loaded {
+    opacity: 1; /* Fade in to full visibility */
+    transform: scale(1); /* Zoom in to 100% of its normal size */
+}
+
 * {
     margin: 0;
     padding: 0;
