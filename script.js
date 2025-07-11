@@ -1,14 +1,41 @@
 /* =========================
     Preloader Functionality
    ========================= */
+// This code must be at the very top of your script.js file
 window.onload = function() {
     const preloader = document.getElementById('preloader');
-    if (preloader) {
-        // Delay hiding the preloader by 2 seconds (2000 milliseconds)
-        // This gives the animation time to play before the website appears.
+    const mainContentWrapper = document.getElementById('main-content-wrapper');
+
+    // Make sure the main content wrapper is initially hidden by default (CSS handles opacity 0)
+    // No need to add/remove classes here initially, CSS takes care of it.
+
+    if (preloader && mainContentWrapper) {
+        // Step 1: Ensure preloader is fully visible from the start
+        preloader.style.display = 'flex'; // Make sure it's visible if CSS overrides for some reason
+        preloader.classList.remove('hidden'); // In case it got hidden by a prior script run
+
+        // Set the duration for the preloader to display its animation
+        const preloaderDisplayDuration = 2000; // 2 seconds
+
+        // Set a short delay for the content animation to start after preloader begins fading
+        // This ensures the preloader animation finishes smoothly
+        const contentAnimationDelay = 500; // 0.5 seconds after preloader starts to hide
+
+        // Timeout to hide the preloader
         setTimeout(() => {
-            preloader.classList.add('hidden'); // Add the 'hidden' class to fade it out
-        }, 2500); // You can adjust this duration (in milliseconds) as needed
+            preloader.classList.add('hidden'); // Start preloader fade-out (CSS transition handles 0.5s)
+
+            // Timeout to trigger the main content animation *after* the preloader has started to fade
+            setTimeout(() => {
+                mainContentWrapper.classList.add('loaded'); // Trigger the content zoom/fade-in animation
+            }, contentAnimationDelay); // Small delay to allow preloader fade to progress
+
+        }, preloaderDisplayDuration); // Preloader stays visible for this duration
+    } else {
+        // Fallback: if preloader/wrapper not found, ensure content is visible
+        if (mainContentWrapper) {
+            mainContentWrapper.classList.add('loaded'); // Just make content visible directly
+        }
     }
 };
 
