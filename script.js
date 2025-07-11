@@ -254,52 +254,57 @@ animatedItems.forEach((item, index) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    // ... (Your existing JavaScript code for sticky nav, rotating text, image preview, etc.) ...
 
     /* =========================================================================
-       Calculate and Display Duration for Professional Experience Dates
+       Calculate and Display Duration for Professional Experience Dates (V4: Inclusive Months)
        ========================================================================= */
 
-    // Helper function to calculate duration in years and months
+    // Helper function to calculate duration in years and months (ADJUSTED FOR INCLUSIVE COUNT)
     function calculateExperienceDuration(startDateStr, endDateStr) {
         const monthMap = {
-            'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
-            'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+            'jan': 0, 'january': 0,
+            'feb': 1, 'february': 1,
+            'mar': 2, 'march': 2,
+            'apr': 3, 'april': 3,
+            'may': 4, 'may': 4,
+            'jun': 5, 'june': 5,
+            'jul': 6, 'july': 6,
+            'aug': 7, 'august': 7,
+            'sep': 8, 'september': 8,
+            'oct': 9, 'october': 9,
+            'nov': 10, 'november': 10,
+            'dec': 11, 'december': 11
         };
 
-        // Parses a date string like "May 2017" into a Date object (set to the 1st of the month)
         const parseDateString = (dateString) => {
             const parts = dateString.split(' ');
-            const monthIndex = monthMap[parts[0]];
+            const monthKey = parts[0].toLowerCase();
+            const monthIndex = monthMap[monthKey];
             const year = parseInt(parts[1]);
-            return new Date(year, monthIndex, 1); // Set to the 1st of the month for consistent calculation
+            return new Date(year, monthIndex, 1);
         };
 
         let startDate = parseDateString(startDateStr);
         let endDate;
 
-        // Handle 'Present' as the end date
         if (endDateStr.toLowerCase() === 'present') {
-            endDate = new Date(); // Current date
+            endDate = new Date();
             endDate.setDate(1); // Set to 1st of current month for consistency
         } else {
             endDate = parseDateString(endDateStr);
         }
 
-        // Calculate difference in full years and months
-        let years = endDate.getFullYear() - startDate.getFullYear();
-        let months = endDate.getMonth() - startDate.getMonth();
+        // Calculate total months difference (inclusive of start and end month)
+        let totalMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+                          (endDate.getMonth() - startDate.getMonth()) + 1; // Added +1 for inclusive count
 
-        // Adjust if months difference is negative (e.g., start in Nov, end in Feb next year)
-        if (months < 0) {
-            months += 12; // Add 12 months
-            years--;      // Subtract a year
+        // Ensure minimum 1 month duration
+        if (totalMonths <= 0) {
+            totalMonths = 1;
         }
 
-        // Special case: If duration is less than 1 full month (e.g., Jan 2020 - Jan 2020), count as 1 month.
-        if (years === 0 && months === 0) {
-            months = 1;
-        }
+        let years = Math.floor(totalMonths / 12);
+        let months = totalMonths % 12;
 
         let durationParts = [];
         if (years > 0) {
@@ -309,25 +314,24 @@ document.addEventListener('DOMContentLoaded', () => {
             durationParts.push(`${months} month${months > 1 ? 's' : ''}`);
         }
 
-        // Format the output string
-        // If only years, return "X years"
+        // Format for cases like "1 year" instead of "1 year 0 months"
         if (years > 0 && months === 0) {
             return `${years} year${years > 1 ? 's' : ''}`;
         }
-        // If only months (and less than a year), return "X months"
+        // Format for cases like "5 months" instead of "0 years 5 months"
         if (years === 0 && months > 0) {
             return `${months} month${months > 1 ? 's' : ''}`;
         }
-        // Otherwise, join years and months (e.g., "1 year 5 months")
+        // Fallback for unexpected cases, should ideally not be reached if totalMonths > 0
         return durationParts.join(' ');
     }
 
-    // Select all date paragraphs within experience items
-    const dateElements = document.querySelectorAll('.experience-item p.date');
+    // Loop through each date element and update its text content (this part remains the same)
+    const dateElements = document.querySelectorAll('.experience-item p.date, .project-item p.date');
 
     dateElements.forEach(dateElement => {
-        const dateText = dateElement.textContent.trim(); // Get the original date string
-        const parts = dateText.split(' – '); // Split by the dash separator
+        const originalDateText = dateElement.textContent.trim();
+        const parts = originalDateText.split(' – ');
 
         if (parts.length === 2) {
             const startDateStr = parts[0].trim();
@@ -335,14 +339,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const duration = calculateExperienceDuration(startDateStr, endDateStr);
 
-            // Append the calculated duration to the existing text
             if (duration) {
-                dateElement.textContent = `${dateText} (${duration})`;
+                dateElement.textContent = `${originalDateText} (${duration})`;
             }
         }
     });
-
-    // ... (Rest of your existing JavaScript code) ...
 });
 
 /* ===============================
