@@ -889,15 +889,17 @@ function createPieChart(ctx, labels, data, chartTitle) {
     const textColor = isDarkMode ? '#e0e0e0' : '#333';
     const pieColors = isDarkMode ?
         [
-            '#FF8C00',  // DarkOrange (BFSI)
+            '#FF8C00',  // DarkOrange  (BFSI)
             '#00BFFF',  // DeepSkyBlue (FMCG)
             '#ADFF2F',  // GreenYellow (Media)
+            '#f878ff',  // LightBlue   (Luxury Goods and Fashion)
             '#DA70D6'   // Orchid (Telecommunication)
         ] :
         [
             '#FF6384', // Red (BFSI)
             '#36A2EB', // Blue (FMCG)
             '#FFCE56', // Yellow (Media)
+            '#a0e384',  // LightBlue   (Luxury Goods and Fashion)
             '#4BC0C0'  // Cyan (Telecommunication)
         ];
     const hoverPieColors = isDarkMode ?
@@ -905,6 +907,7 @@ function createPieChart(ctx, labels, data, chartTitle) {
             '#FFA500', // Orange (BFSI)
             '#87CEFA', // LightSkyBlue (FMCG)
             '#98FB98', // PaleGreen (Media)
+            '#f27a7d',  // LightBlue   (Luxury Goods and Fashion)
             '#EE82EE'  // Violet (Telecommunication)
         ] :
         [
@@ -1037,8 +1040,8 @@ function initializeCharts() {
     myCharts.etlChart = createBarChart(etlCtx, etlLabels, etlData, 'ETL Tools');
 
     // Data for the Pie chart (industry experience percentages)
-    const pieDataLabels = ['BFSI', 'FMCG', 'Media', 'Telecommunication'];
-    const pieDataValues = [40, 20, 20, 20];
+    const pieDataLabels = ['BFSI', 'FMCG', 'Media', 'Luxury Goods and Fashion', 'Telecommunication'];
+    const pieDataValues = [40, 20, 10, 20, 10];
 
     // Create Pie chart and store instance
     myCharts.pieChart = createPieChart(pieCtx, pieDataLabels, pieDataValues, 'Industry Experience Distribution');
