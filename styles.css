@@ -1,8 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
 
-/* =========================================================================
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* =================
    Preloader Styling
-   ========================================================================= */
+   ================= */
 
 #preloader {
     position: fixed; /* Fixes it to the viewport */
@@ -44,9 +50,9 @@ body.dark {
     --background-color: #1a1a1a; /* Example dark mode background color */
 }
 
-/* =========================================================================
+/* ===========================================================
    Main Content Wrapper Styling (for post-preloader animation)
-   ========================================================================= */
+   =========================================================== */
 
 #main-content-wrapper {
     /* Initially hide and scale down the content */
@@ -84,8 +90,8 @@ body {
 }
 
 /* =================================================
-    Name Section Styling (Hi, I'm Vishal Trivedi 👋)
-==================================================== */
+   Name Section Styling (Hi, I'm Vishal Trivedi 👋)
+   ================================================= */
 
 .section-1 {
     /* No background gradient here anymore, handled by body */
@@ -172,9 +178,9 @@ body {
     }
 }
 
-/* ===============================
-    Profile Photo Section Styling
-================================= */
+/* =============================
+   Profile Photo Section Styling
+   ============================= */
 .photo {
     flex-shrink: 0; /* Prevent the image from shrinking */
 }
@@ -199,10 +205,9 @@ body {
     text-align: justify;
 }
 
-/* ======================================
-    Experience and Overseas Message Summary
-    ====================================== */
-/* Universal reset for demo */
+/* ==========================
+    Overseas Message Summary
+   ========================== */
 body {
     margin: 0;
     padding: 2rem;
@@ -239,20 +244,16 @@ body {
 }
 
 
-/* Gradient Heading Styles (Default for Dark Mode) */
 .card h3 {
-    /* margin-top: 0;  -- This rule is effectively overridden by .overseas-message h3 */
     text-align: left; /* Aligned titles to the left */
     font-size: 1.8em;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
     /* Gradient for dark mode titles */
     background: linear-gradient(to right, #ff00ff, #00ffff, #00ff00); /* Purple, Cyan, Green */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent; /* Fallback for browsers that don't support text fill color */
-    display: inline-block;
-    width: 100%;
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.2); /* Subtle glow for text in dark mode */
     position: relative;
     z-index: 35;
@@ -353,12 +354,12 @@ body {
 
 /* Paragraph inside card (Default for Dark Mode) */
 .card p.overseas-summary {
-    margin-top: 2.5rem;
+    margin-top: 0;
     line-height: 1.7;
     font-size: 1.05em;
     padding: 1rem;
     background-color: rgba(255, 255, 255, 0.05); /* Subtle background for dark card */
-    border-radius: 15px;
+    border-radius: 25px;
 }
 
 /* Strong text within summary paragraph (Default for Dark Mode) */
@@ -366,7 +367,6 @@ body {
     color: #00ffff; /* Highlight the strong text in dark mode */
 }
 
----
 
 ### Light Mode Overrides
 
@@ -412,9 +412,9 @@ body.light .card p.overseas-summary strong {
     color: #0066ff !important; /* Force highlight color for strong text in light mode */
 }
 
-/* ===============================
-    Sticky Navigation Bar Section Styling
-================================= */
+/* =====================================
+   Sticky Navigation Bar Section Styling
+   ===================================== */
 .sticky-nav {
     position: fixed;
     top: 20px; /* Move the nav down from the top */
@@ -681,9 +681,9 @@ html {
 }
 
 
-/* ===============================
+/* ==================================
     Light & Dark Mode Section Styling
-================================= */
+   ================================== */
 
 /* Define CSS Variables for easy theme switching */
 :root {
@@ -826,7 +826,7 @@ body:not(.light) .pie-chart-container h3 {
 /* --- END NEW CSS ADDITION --- */
 
 
-.bar-chart h3, .pie-chart-container h3, .project-item h3, .education-item h3, .experience-item h3 {
+.bar-chart h3, .pie-chart-container h3, .project-item h3, .education-item h3, .experience-item h3{
     color: var(--card-heading-color);
 }
 .experience-item p, .experience-item ul li,
@@ -864,9 +864,9 @@ body:not(.light) .pie-chart-container h3 {
     color: var(--text-color) !important;
 }
 
-/* =========================================================================
-   Experience Section Styling (Modified for Grid Layout)
-   ========================================================================= */
+/* ==========================
+   Experience Section Styling
+   ========================== */
 
 .section-experience, .section-projects {
     padding: 80px 50px;
@@ -878,40 +878,30 @@ body:not(.light) .pie-chart-container h3 {
 }
 
 .experience-container {
-    display: grid; /* CHANGE to CSS Grid */
-    grid-template-columns: repeat(2, 1fr); /* Two equal columns for desktop */
-    gap: 30px; /* Spacing between grid items (both rows and columns) */
-    /* REMOVE: flex-wrap: nowrap; */
-    /* REMOVE: overflow-x: auto; */
-    /* REMOVE: -webkit-overflow-scrolling: touch; */
-    /* REMOVE: justify-content: flex-start; */
-    /* REMOVE: padding-bottom: 20px; */ /* No need for scrollbar space */
-    max-width: 100%; /* Ensure it takes full width */
-    margin: 0 auto; /* Center the container */
-    /* REMOVE Scrollbar customization for .experience-container as it won't scroll horizontally */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 /* Experience item styling */
 .experience-item {
-    /* REMOVE: flex: 0 0 350px; */ /* No longer needed for grid layout */
-    /* REMOVE: min-width: 350px; */ /* Grid handles sizing */
-    /* REMOVE: max-width: 350px; */ /* Grid handles sizing */
-    width: 100%; /* Make the item fill its grid column */
+    width: 100%;
     background-color: var(--card-bg-color);
     color: var(--card-text-color);
     padding: 25px;
     border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--box-shadow);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     opacity: 0; /* Hidden initially for JS animation */
     /* Keep animation: fadeIn 0.8s ...; - JS will handle animation play state */
     text-align: left;
-    margin-bottom: 0; /* Gap handles spacing, no need for bottom margin */
+    margin-bottom: 0;
     display: flex;
     flex-direction: column;
     position: relative;
     z-index: 1;
-    /* This makes all cards in a row equal height, and content within them flexible */
 }
 
 /* Delay animation for each item (this will still work based on HTML order) */
@@ -962,9 +952,9 @@ body:not(.light) .pie-chart-container h3 {
 }
 
 
-* =========================================================================
+/* ==========================================
    Responsive Design Adjustments (for Mobile)
-   ========================================================================= */
+   ========================================== */
 
 @media (max-width: 768px) {
     /* ... (Your other mobile styles for 768px breakpoint) ... */
@@ -985,7 +975,7 @@ body:not(.light) .pie-chart-container h3 {
     .experience-item h3 {
         font-size: 1.3em;
     }
-    .experience-item .date {
+    .experience-item p.date {
         font-size: 0.9em;
     }
     .experience-item .project-subtitle {
@@ -1016,7 +1006,7 @@ body:not(.light) .pie-chart-container h3 {
     .experience-item h3 {
         font-size: 1.2em;
     }
-    .experience-item .date {
+    .experience-item p.date {
         font-size: 0.85em;
     }
     .experience-item .project-subtitle {
@@ -1158,9 +1148,9 @@ body.dark {
 }
 
 
-/* ===============================
-    Featured Projects Section Styling
-================================= */
+/* =================================
+   Featured Projects Section Styling
+   ================================= */
 .section-projects {
     padding: 80px 50px;
     text-align: center;
@@ -1203,8 +1193,8 @@ body.dark {
 
 
 /* ==========================================
-    Featured Projects - Button Hover Animation
-    ========================================== */
+   Featured Projects - Button Hover Animation
+   ========================================== */
 /* Styles for individual filter buttons */
 /* --- Styles for Main Filter Buttons (e.g., SQL, Python, Power BI) --- */
 
@@ -1357,7 +1347,7 @@ body.dark .project-item.visible {
 
 /* ==================================================
     Individual Project Skill Buttons inside the cards
-    ================================================== */
+   ================================================== */
 
 /* Container for skill buttons within a project item */
 .project-item .project-skills-buttons {
@@ -1491,7 +1481,7 @@ body.dark .skill-btn.active:hover {
 
 /* ==================================================
     Hover Image Preview Styling on View Images Button
-    ================================================== */
+   ================================================== */
 
 .btn-project.view-images-btn {
     overflow: visible; /* Allow the popup to extend beyond the button's bounds */
@@ -1818,8 +1808,8 @@ body:not(.light) .pie-chart-container {
 
 .greeting-emoji-gif {
     /* Adjust these values to control the GIF's size */
-    width: 45px; /* Example: adjust to be similar to an emoji size */
-    height: 45px; /* Maintain aspect ratio */
+    width: 40px; /* Example: adjust to be similar to an emoji size */
+    height: 40px; /* Maintain aspect ratio */
     
     /* Align the GIF vertically with the text */
     vertical-align: middle; /* Ensures it sits nicely on the text line */
@@ -1835,9 +1825,9 @@ body:not(.light) .pie-chart-container {
 /* Hover effects for charts are now handled by .bar-chart:hover */
 
 
-/* ===============================
+/* ===========================
     Education Section Styling
-================================= */
+   =========================== */
 .section-education {
     padding: 80px 50px;
     text-align: center;
@@ -1899,9 +1889,9 @@ body:not(.light) .pie-chart-container {
     }
 }
 
-/* ===============================
-    Rainbow Border Animation (on the outer strip) - REVISED
-================================= */
+/* ==============================================
+    Rainbow Border Animation (on the outer strip)
+   ============================================== */
 
 /* Keyframes for the conic gradient spin */
 @keyframes spin {
@@ -2008,26 +1998,168 @@ body.dark .icon /* Dark mode shadow for icons */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* About Bullets */
-.content .about-bullets {
-    list-style-type: disc; /* Standard bullet points */
-    margin-left: 20px; /* Indent the bullets slightly */
-    padding-left: 0; /* Remove default padding from UL */
-    text-align: left; /* Ensure the text aligns to the left */
-    max-width: none; /* Remove any max-width restriction inherited from .description */
-    width: 100%; /* Ensure it takes full available width within its parent */
-    color: var(--text-color); /* Use variable for About section text */
-    line-height: 1.7; /* Good for readability */
-    margin-top: 20px; /* Space above the list */
-    margin-bottom: 20px; /* Space below the list */
+/* ===============================================================
+     About Section Styling (Consolidated and Cleaned)
+     - Requires HTML structure with <div class="about-card-content">
+   =============================================================== */
+
+/* Overall Section Styling (Keep this for general section padding/alignment) */
+#about.section {
+    padding: 10px 30px; /* Provides top/bottom space for the entire section */
+    text-align: center; /* Centers the card horizontally within the section */
+    color: var(--text-color); /* General text color for the section (e.g., section title) */
 }
 
-.content .about-bullets li {
-    margin-bottom: 10px; /* Space between bullet points */
-    padding-left: 5px; /* Small padding to ensure text doesn't touch the bullet */
+/* REMOVE THIS RULE: The h3 for "Professional Summary" is inside the card now,
+   and will be styled by a more specific rule below. This rule is likely for
+   a section's main H3, but your section title should ideally be an H2.
+.about-section h3 {
+    color: var(--text-color);
+}
+*/
+
+/* The Main About Section Card Container */
+.about-section-card {
+    margin: 0 auto; /* This keeps 40px top margin but sets 0px bottom margin */
+    max-width: 1400px; /* Your preferred wider max-width */
+    width: 95%; /* Your preferred wider width */
+    
+    border-radius: 15px; /* Rounded corners */
+    position: relative; /* Essential for positioning pseudo-elements */
+    overflow: hidden; /* Ensures animated border doesn't spill outside corners */
+    z-index: 10; /* Ensures the card is layered correctly above other elements */
+    
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Initial subtle shadow for dark mode */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transitions for hover effects */
+
+    /* These properties are now managed by ::before (for border) and ::after (for inner background) */
+    background-color: transparent; /* No direct background on the main card */
+    padding: 0; /* No direct padding on the main card */
 }
 
-/* Overseas Message Styling */
+/* Keyframe animation for the rotating border (KEEP THIS) */
+@keyframes rotateBorder {
+    from { transform: rotate(0deg) scale(1); }
+    to { transform: rotate(360deg) scale(1); }
+}
+
+/* --- Animated Rainbow Border on Hover (::before pseudo-element) --- */
+.about-section-card::before {
+    content: '';
+    position: absolute;
+    top: -500%; /* Positions far outside to allow for full scale effect */
+    left: -500%;
+    width: 1100%; /* Large enough to cover the parent for full rotation */
+    height: 1100%;
+    background: conic-gradient(
+        from 0deg at 50% 50%,
+        #ff0000, #ffa500, #ffff00, #008000, #0000ff, #4b0082, #ee82ee, #ff0000
+    );
+    transform: scale(0); /* Hidden and scaled down initially */
+    opacity: 0; /* Hidden initially */
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out; /* Smooth transition for appearance */
+    z-index: 1; /* Layered below the inner content mask */
+    border-radius: inherit; /* Inherit border-radius from the parent card */
+}
+
+/* --- Inner content mask (::after pseudo-element) --- */
+.about-section-card::after {
+    content: '';
+    position: absolute;
+    top: 3px; /* Defines the border thickness (matches your .card example) */
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    background-color: var(--card-bg-color); /* Uses the theme-aware background variable */
+    border-radius: inherit; /* Maintain rounded corners */
+    z-index: 5; /* Layered above ::before, but below the actual content */
+}
+
+/* --- Content Wrapper: This div holds your H3 and UL (REQUIRED for correct layout) --- */
+.about-section-card .about-card-content {
+    position: relative; /* Needed for z-index */
+    z-index: 25; /* Higher z-index to appear above the inner mask */
+    padding: 20px; /* This provides INTERNAL spacing (top, right, bottom, left) for all content */
+    text-align: left; /* Aligns text within the content wrapper to the left */
+}
+
+/* --- Styling for the "Professional Summary:" Heading (H3) --- */
+.about-section-card .about-card-content h3 {
+    color: var(--card-heading-color); /* Uses theme-aware heading color (defined in your :root / body.light) */
+    font-size: 1.5em; /* Adjust font size as desired */
+    margin-top: 0; /* REMOVES default top margin to reduce extra space above heading */
+    margin-bottom: 15px; /* CONTROLS space *after* the heading (adjust this value as needed) */
+}
+
+/* REMOVE THIS RULE: Its functionality is now handled by .about-section-card .about-card-content.
+   The padding previously here was causing issues when h3 was placed directly inside the card.
+.about-section-card > ul {
+    position: relative;
+    z-index: 25;
+    padding: 20px;
+    text-align: left;
+}
+*/
+
+/* On hover, expand and show the animated border (KEEP THIS) */
+.about-section-card:hover::before {
+    transform: scale(1); /* Scale up to full size */
+    opacity: 1; /* Make visible */
+    animation: rotateBorder 8s linear infinite; /* Start the rotation animation */
+}
+
+/* Existing hover effects for lift and shadow on the card (KEEP THESE) */
+.about-section-card:hover {
+    transform: translateY(-5px); /* Lifts the card */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Shadow for light mode hover */
+}
+
+/* Dark mode specific hover effect for shadow (KEEP THIS) */
+body.dark .about-section-card:hover {
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15); /* Shadow for dark mode hover */
+}
+
+/* Styling for the bullet points within the card (KEEP THESE) */
+.about-section-card .about-bullets {
+    list-style-type: disc; /* Standard disc bullets */
+    padding-left: 20px; /* Indentation for bullet points */
+    margin: 0; /* Remove default margin from ul */
+}
+
+.about-section-card .about-bullets li {
+    font-size: 1rem;
+    color: var(--card-text-color); /* Will adapt to theme (light in dark mode, dark in light mode) */
+    margin-bottom: 10px; /* Space between list items */
+    line-height: 1.6; /* Readability for lines of text */
+}
+
+.about-section-card .about-bullets li:last-child {
+    margin-bottom: 0; /* No bottom margin for the last list item */
+}
+
+/* --- Light Mode Overrides for About Card (Mimicking .card example's explicit !important use) --- */
+body.light .about-section-card {
+    /* Override initial dark mode box-shadow with a lighter one for light mode */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light .about-section-card::after {
+    /* Ensure the inner background is light (e.g., #f8f9fa) in light mode */
+    background-color: #f8f9fa !important; /* Matches .card example's explicit light background */
+}
+
+body.light .about-section-card .about-card-content h3 { /* Light mode override for h3 color */
+    color: #2575fc !important; /* Example light mode heading color (matches your card's h3 gradient start) */
+}
+
+body.light .about-section-card .about-bullets li {
+    /* Ensure text is dark (e.g., #222) in light mode for readability */
+    color: #222 !important; /* Matches .card example's explicit dark text */
+}
+
+/* ==========================
+    Overseas Message Styling
+   ========================== */
 .content .overseas-message {
     text-align: left;
     margin-top: 30px;
@@ -2217,7 +2349,7 @@ body.dark .icon /* Dark mode shadow for icons */
     /* Adjust heading sizes */
     h1 { font-size: 2.5em; }
     h2 { font-size: 2em; }
-    h3 { font-size: 1.6em; } /* Adjust card h3 size */
+    h3 { font-size: 1.6em; }
     h4 { font-size: 1.3em; }
 
     /* Adjust paragraph and list item spacing */
