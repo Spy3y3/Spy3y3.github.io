@@ -12,13 +12,15 @@
 <body class="light">
     <div id="preloader">
         <img src="images/data analysis preloader.gif" alt="Loading...">
- <!--	<img src="images/column line chart preloader.gif" alt="Still Loading...">			-->
     </div>
 
     <nav class="sticky-nav" id="stickyNav">
         <ul class="nav-links" id="navLinks">
             <li>
-                <button id="theme-icon" class="theme-toggle-btn">☀️</button>
+                <button id="theme-toggle-btn" class="theme-toggle-btn">
+			<img id="sun-icon" src="images/light mode.gif" alt="Light Mode Icon" class="theme-icon-gif">
+			<img id="moon-icon" src="images/dark mode.gif" alt="Dark Mode Icon" class="theme-icon-gif">
+		</button>
             </li>
             <li><a href="#about"><i class="fas fa-user"></i> About</a></li>
             <li><a href="#experience"><i class="fas fa-briefcase"></i> Experience</a></li>
@@ -27,8 +29,8 @@
             <li><a href="#education"><i class="fas fa-graduation-cap"></i> Education</a></li>
             <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
         </ul>
-    </nav>
-    
+    </nav>   
+
 <div id="main-content-wrapper">
 
     <div class="section section-1" id="about">
@@ -37,7 +39,7 @@
         </div>
         <div class="content">
             <h1>
-                <span class="static">Hi <img src="images/me.gif" alt="Me Waving Hand Icon" class="greeting-emoji-gif">, I'm Vishal Trivedi 👉</span>
+                <span class="static">Hi <img src="images/me.gif" alt="Waving Hand Icon" class="greeting-emoji-gif">, I'm Vishal Trivedi 👉</span>
                 <span class="rotating-text">
                     <span class="cd-words-wrapper">
                         <b class="word is-visible">A Data Enthusiast 💡</b>
@@ -405,7 +407,7 @@
             <div class="bar-chart"><canvas id="biChart"></canvas></div>
             <div class="bar-chart"><canvas id="cloudChart"></canvas></div>
             <div class="bar-chart"><canvas id="etlChart"></canvas></div>
-            <div class="pie-chart-container"><canvas id="pieChart"></canvas></div>
+            <div class="pie-chart-container pie-chart-wider"><canvas id="pieChart"></canvas></div>
         </div>
     </div>
 
