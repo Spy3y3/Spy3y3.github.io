@@ -39,9 +39,9 @@ window.onload = function() {
     }
 };
 
-/* ====================================
+/* =====================================
     Sticky Navigation Bar Functionality
-   ==================================== */
+   ===================================== */
 document.addEventListener('DOMContentLoaded', () => {
     const stickyNav = document.getElementById('stickyNav');
     let lastScrollY = window.scrollY;
@@ -91,10 +91,74 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+/* ==========================
+    Light & Dark Mode Toggle
+   ========================== */
+document.addEventListener("DOMContentLoaded", function () {
+    const themeToggleButton = document.getElementById('theme-toggle-btn'); // UPDATED: Get the button by its new ID
+    const sunIcon = document.getElementById('sun-icon');   // NEW: Get the sun GIF element
+    const moonIcon = document.getElementById('moon-icon'); // NEW: Get the moon GIF element
+    const body = document.body;
 
-/* =================================================
+    // Apply saved theme on load
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        body.classList.add('dark');
+        // UPDATED: Ensure correct icon is shown on load
+        if (sunIcon) sunIcon.style.display = 'none';
+        if (moonIcon) moonIcon.style.display = 'block';
+    } else {
+        body.classList.add('light');
+        // UPDATED: Ensure correct icon is shown on load
+        if (moonIcon) moonIcon.style.display = 'none';
+        if (sunIcon) sunIcon.style.display = 'block';
+    }
+
+    // Theme Toggle functionality
+themeToggleButton.addEventListener('click', () => {
+        if (body.classList.contains('dark')) {
+            // Switch to light mode
+            body.classList.remove('dark');
+            body.classList.add('light');
+            if (moonIcon) moonIcon.style.display = 'none';
+            if (sunIcon) sunIcon.style.display = 'block';
+            localStorage.setItem('theme', 'light');
+        } else {
+            // Switch to dark mode
+            body.classList.remove('light');
+            body.classList.add('dark');
+            if (sunIcon) sunIcon.style.display = 'none';
+            if (moonIcon) moonIcon.style.display = 'block';
+            localStorage.setItem('theme', 'dark');
+        }
+
+        // --- NEW/UPDATED LOGIC HERE ---
+        // Immediately re-initialize charts when the theme is toggled.
+        // This will destroy existing charts and create new ones with the updated theme colors.
+        initializeCharts();
+        // --- END NEW/UPDATED LOGIC ---
+    });
+
+    // Observe the expertise section for chart initialization
+    const expertiseSection = document.getElementById('expertise');
+    // We remove the `unobserve` here so charts can be re-initialized on theme change or if you scroll away and back
+    const chartObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                initializeCharts(); // Initialize charts when expertise section becomes visible
+            } else {
+                // Optionally destroy charts when not in view to save resources or stop animations
+                // destroyCharts(); // Implement this if needed
+            }
+        });
+    }, { threshold: 0.2 }); // Trigger when 20% of the section is visible
+
+    chartObserver.observe(expertiseSection); // Start observing the expertise section
+});
+
+/* ========================================
     Name Section - Rotating Text Animation
-==================================================== */
+   ======================================== */
 document.addEventListener('DOMContentLoaded', function () {
     const words = document.querySelectorAll('.cd-words-wrapper .word');
     let currentIndex = 0;
@@ -196,66 +260,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-
-/* ===============================
-    Light & Dark Mode Toggle
-================================= */
-document.addEventListener("DOMContentLoaded", function () {
-    const themeIcon = document.getElementById('theme-icon');
-    const body = document.body;
-
-    // Apply saved theme on load
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        body.classList.add('dark');
-        themeIcon.textContent = '🌙'; // Moon icon for dark mode
-    } else {
-        body.classList.add('light');
-        themeIcon.textContent = '☀️'; // Sun icon for light mode
-    }
-
-    // Theme Toggle functionality
-    themeIcon.addEventListener('click', () => {
-        if (body.classList.contains('dark')) {
-            // Switch to light mode
-            body.classList.remove('dark');
-            body.classList.add('light');
-            themeIcon.textContent = '☀️'; // Set sun icon for light mode
-            localStorage.setItem('theme', 'light'); // Store in localStorage
-        } else {
-            // Switch to dark mode
-            body.classList.remove('light');
-            body.classList.add('dark');
-            themeIcon.textContent = '🌙'; // Set moon icon for dark mode
-            localStorage.setItem('theme', 'dark'); // Store in localStorage
-        }
-        // Re-render charts to apply theme-specific colors
-        // We'll re-initialize charts only when the expertise section is in view
-        // to trigger the animation again for the new theme colors.
-        // No immediate re-initialization here.
-    });
-
-    // Observe the expertise section for chart initialization
-    const expertiseSection = document.getElementById('expertise');
-    // We remove the `unobserve` here so charts can be re-initialized on theme change or if you scroll away and back
-    const chartObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                initializeCharts(); // Initialize charts when expertise section becomes visible
-            } else {
-                // Optionally destroy charts when not in view to save resources or stop animations
-                // destroyCharts(); // Implement this if needed
-            }
-        });
-    }, { threshold: 0.2 }); // Trigger when 20% of the section is visible
-
-    chartObserver.observe(expertiseSection); // Start observing the expertise section
-});
-
-
-/* ===============================
+/* =========================================================
     Scroll-triggered Fade-in for Experience & Project Items
-================================= */
+   ========================================================= */
 const animatedItems = document.querySelectorAll('.experience-item, .project-item, .education-item');
 
 animatedItems.forEach((item, index) => {
@@ -296,9 +303,9 @@ animatedItems.forEach((item, index) => {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    /* =========================================================================
-       Calculate and Display Duration for Professional Experience Dates (V4: Inclusive Months)
-       ========================================================================= */
+/* ==================================================================
+    Calculate and Display Duration for Professional Experience Dates
+   ================================================================== */
 
     // Helper function to calculate duration in years and months (ADJUSTED FOR INCLUSIVE COUNT)
     function calculateExperienceDuration(startDateStr, endDateStr) {
@@ -387,9 +394,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-/* ===============================
+/* =================================================
     Scroll-triggered Animation for Section Headings
-================================= */
+   ================================================= */
 const sectionHeadings = document.querySelectorAll('.section h2');
 
 sectionHeadings.forEach((heading, index) => {
@@ -682,9 +689,9 @@ document.addEventListener('DOMContentLoaded', () => {
     filterProjects('all');
 });
 
-/* ===============================
+/* ==========================================
     Expertise Section - Chart Implementation
-================================= */
+   ========================================== */
 
 // Store chart instances to destroy them later for theme switching/re-rendering
 let myCharts = {};
@@ -721,7 +728,7 @@ function createBarChart(ctx, labels, data, chartTitle) {
             labels: labels,
             datasets: [
                 {
-                    label: 'Proficiency (0 to 10)',
+                    label: 'Proficiency',
                     data: data,
                     backgroundColor: barColors.slice(0, labels.length), // Use forced light mode colors
                     borderColor: barColors.slice(0, labels.length).map(color => color.replace('0.8', '1')),
@@ -875,9 +882,9 @@ function createBarChart(ctx, labels, data, chartTitle) {
 }
 
 
-/* ==============================================
+/* ===============================================
     Function to create a pie chart with animation
-   ============================================== */
+   =============================================== */
 
 function createPieChart(ctx, labels, data, chartTitle) {
     // Destroy existing chart instance if it exists
@@ -887,20 +894,20 @@ function createPieChart(ctx, labels, data, chartTitle) {
 
     const isDarkMode = document.body.classList.contains('dark');
     const textColor = isDarkMode ? '#e0e0e0' : '#333';
-    const pieColors = isDarkMode ?
+    const pieColors = isDarkMode ? 
         [
             '#FF8C00',  // DarkOrange  (BFSI)
             '#00BFFF',  // DeepSkyBlue (FMCG)
             '#ADFF2F',  // GreenYellow (Media)
             '#f878ff',  // LightBlue   (Luxury Goods and Fashion)
-            '#DA70D6'   // Orchid (Telecommunication)
+            '#4158d0'   // Orchid (Telecommunication)
         ] :
         [
             '#FF6384', // Red (BFSI)
-            '#36A2EB', // Blue (FMCG)
+            '#00c1ff', // Blue (FMCG)
             '#FFCE56', // Yellow (Media)
             '#a0e384',  // LightBlue   (Luxury Goods and Fashion)
-            '#4BC0C0'  // Cyan (Telecommunication)
+            '#4158d0'  // Cyan (Telecommunication)
         ];
     const hoverPieColors = isDarkMode ?
         [
@@ -908,14 +915,19 @@ function createPieChart(ctx, labels, data, chartTitle) {
             '#87CEFA', // LightSkyBlue (FMCG)
             '#98FB98', // PaleGreen (Media)
             '#f27a7d',  // LightBlue   (Luxury Goods and Fashion)
-            '#EE82EE'  // Violet (Telecommunication)
+            '#4158d0'  // Violet (Telecommunication)
         ] :
         [
-            '#FF416C', // Darker Red
-            '#357EC7', // Darker Blue
-            '#FFB100', // Darker Yellow
-            '#38B0A7'  // Darker Cyan
+            '#FF416C', // Darker Red (BFSI)
+            '#357EC7', // Darker Blue (FMCG)
+            '#FFB100', // Darker Yellow (Media)
+            '#49c628',  // LightBlue   (Luxury Goods and Fashion
+            '#a8e4ea'  // Darker Cyan (Telecommunication)
         ];
+
+    // Define a text color that changes with the theme for labels
+    // This will be light in dark mode and dark in light mode
+    const datalabelTextColor = '#CA5EA2';
 
     myCharts[ctx.canvas.id] = new Chart(ctx, { // Store the chart instance
         type: 'pie',
@@ -932,6 +944,11 @@ function createPieChart(ctx, labels, data, chartTitle) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: { // <--- ADD THIS NEW 'layout' OBJECT
+                padding: {
+                    bottom: 20 // Add 30px padding at the bottom of the chart area. This creates space for labels when they rotate down.
+                }
+            },
             plugins: {
                 legend: {
                     position: 'top',
@@ -941,7 +958,8 @@ function createPieChart(ctx, labels, data, chartTitle) {
                             weight: 'bold',
                         },
                         color: '#3674B5', // Legend text color adapts to theme
-                        padding: 20,
+                        padding: 10,	  // Reduce padding (Space) between legend labels
+                        wrap: false
                     },
                 },
                 title: {
@@ -959,29 +977,30 @@ function createPieChart(ctx, labels, data, chartTitle) {
                             const label = context.label || '';
                             const value = context.raw || 0;
                             const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                            const percentage = ((value / total) * 100).toFixed(1);
+                            const percentage = ((value / total) * 100);
                             return `${label}: ${value}% (${percentage}%)`;
                         }
                     },
-                    backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.7)',
-                    titleColor: textColor,
-                    bodyColor: textColor,
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    titleColor: '#333',
+                    bodyColor: '#333',
                 },
                 datalabels: { // Configuration for chartjs-plugin-datalabels
-                    color: '#333', // Label text color
+                    color: datalabelTextColor, // Label text color
                     font: {
                         weight: 'bold',
-                        size: 14,
+                        size: 12,
                     },
                     formatter: (value, context) => {
                         const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                        const percentage = ((value / total) * 100).toFixed(1);
+                        const percentage = ((value / total) * 100);
                         return percentage + '%';
                     },
                     // Position labels outside if possible, or intelligently
                     anchor: 'end', // Anchor point of the label (start, center, end)
                     align: 'end', // How the label is aligned relative to the anchor point
-                    offset: 5, // Distance from the anchor point
+                    offset: -1, // Distance from the anchor point
+                    clamp: true,
                     display: function(context) {
                         // Only display if the slice is large enough or a significant percentage
                         return context.dataset.data[context.dataIndex] > 0; // Only show for non-zero values
