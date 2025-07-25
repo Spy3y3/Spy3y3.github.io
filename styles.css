@@ -6,9 +6,9 @@
   inherits: false;
 }
 
-/* =================
-   Preloader Styling
-   ================= */
+/* ===================
+    Preloader Styling
+   =================== */
 
 #preloader {
     position: fixed; /* Fixes it to the viewport */
@@ -50,9 +50,9 @@ body.dark {
     --background-color: #1a1a1a; /* Example dark mode background color */
 }
 
-/* ===========================================================
-   Main Content Wrapper Styling (for post-preloader animation)
-   =========================================================== */
+/* =============================================================
+    Main Content Wrapper Styling (for post-preloader animation)
+   ============================================================= */
 
 #main-content-wrapper {
     /* Initially hide and scale down the content */
@@ -89,9 +89,9 @@ body {
     transition: background-color 0.3s, color 0.3s; /* Smooth theme transition for text/elements */
 }
 
-/* =================================================
-   Name Section Styling (Hi, I'm Vishal Trivedi 👋)
-   ================================================= */
+/* ==================================================
+    Name Section Styling (Hi, I'm Vishal Trivedi 👋)
+   ================================================== */
 
 .section-1 {
     /* No background gradient here anymore, handled by body */
@@ -178,15 +178,16 @@ body {
     }
 }
 
-/* =============================
-   Profile Photo Section Styling
-   ============================= */
+/* ===============================
+    Profile Photo Section Styling
+   =============================== */
 .photo {
     flex-shrink: 0; /* Prevent the image from shrinking */
 }
 
 .photo img {
     max-width: 100%;
+    margin-top: 50px;
     height: auto; /* Maintain aspect ratio */
     border-radius: 50%; /* Circular image */
     object-fit: cover; /* Proper image scaling */
@@ -412,12 +413,12 @@ body.light .card p.overseas-summary strong {
     color: #0066ff !important; /* Force highlight color for strong text in light mode */
 }
 
-/* =====================================
-   Sticky Navigation Bar Section Styling
-   ===================================== */
+/* =======================================
+    Sticky Navigation Bar Section Styling
+   ======================================= */
 .sticky-nav {
     position: fixed;
-    top: 20px; /* Move the nav down from the top */
+    top: 10px; /* Move the nav down from the top */
     width: 80%; /* Increased width for more items */
     max-width: 900px; /* Max width to prevent it from getting too wide */
     left: 50%;
@@ -448,14 +449,16 @@ body.light .card p.overseas-summary strong {
 .nav-links li {
     margin: 0 5px;
 }
-.nav-links li .theme-toggle-btn { /* Specific styling for the theme toggle button's li */
+
+/* UPDATED: Specific styling for the theme toggle button's li */
+.nav-links li .theme-toggle-btn {
     display: flex; /* Make it a flex container to align its content */
     align-items: center; /* Vertically center the icon/text */
     justify-content: center; /* Horizontally center if needed */
-    font-size: 1.5rem; /* Adjust font size if needed */
+    font-size: 0; /* REMOVED FONT SIZE: Hides any lingering emoji text */
     background-color: transparent;
     border: none;
-    color: #333; /* Default color, will change with theme */
+    color: transparent; /* REMOVED COLOR: Hides any lingering emoji text */
     cursor: pointer;
     transition: color 0.3s, transform 0.2s;
     height: 100%; /* Take full height of the nav */
@@ -464,7 +467,39 @@ body.light .card p.overseas-summary strong {
 
 .nav-links li .theme-toggle-btn:hover {
     transform: scale(1.1);
-    color: #0077b5; /* Highlight color on hover in light mode */
+    color: #0077b5; /* Highlight color on hover in light mode (if any text somehow shows) */
+}
+
+/* NEW: Styles for the GIF icons inside the toggle button */
+.theme-toggle-btn .theme-icon-gif {
+    height: 24px; /* Adjust size as needed */
+    width: 24px;  /* Maintain aspect ratio */
+    vertical-align: middle; /* Align nicely */
+    transition: opacity 0.3s ease; /* Smooth fade when switching */
+}
+
+/* NEW: Rules to hide/show specific icons based on theme */
+body.light .theme-toggle-btn #moon-icon {
+    display: none;
+    opacity: 0;
+}
+body.light .theme-toggle-btn #sun-icon {
+    display: block; /* Show sun icon in light mode */
+    opacity: 1;
+}
+
+body.dark .theme-toggle-btn #sun-icon {
+    display: none;
+    opacity: 0;
+}
+body.dark .theme-toggle-btn #moon-icon {
+    display: block; /* Show moon icon in dark mode */
+    opacity: 1;
+}
+
+/* NEW: Optional hover effect for the GIF icons */
+.nav-links li .theme-toggle-btn:hover .theme-icon-gif {
+    transform: scale(1.1); /* Slight zoom on hover */
 }
 
 
@@ -563,16 +598,9 @@ body.light .card p.overseas-summary strong {
     }
 }
 
-
-/* REMOVED: individual background gradients for sections */
-/* .section-1 { background: linear-gradient(to right, #6a11cb, #2575fc); } */
-/* ... and so on for other sections ... */
-
-/* REMOVED: explicit h2 color for sections with dark background - now handled by gradient */
-/* .section-1 h2, .section-experience h2, .section-projects h2, .section-education h2, .section-contact h2 { color: #fff; } */
-
-
-/* Smooth Scroll Effect */
+/* ======================
+    Smooth Scroll Effect
+   ====================== */
 html {
     scroll-behavior: smooth;
 }
@@ -680,7 +708,6 @@ html {
     }
 }
 
-
 /* ==================================
     Light & Dark Mode Section Styling
    ================================== */
@@ -694,8 +721,8 @@ html {
     --nav-link-color: #c0c0c0; /* Default dark mode nav link color */
     --nav-link-hover-bg: #3a3a3a;
     --nav-link-active-bg: #004d77;
-    --theme-toggle-color: #c0c0c0;
-    --theme-toggle-hover-color: #a4f9a4;
+    --theme-toggle-color: #c0c0c0; /* This variable is less relevant now as we use GIFs */
+    --theme-toggle-hover-color: #a4f9a4; /* This variable is less relevant now as we use GIFs */
     --heading-gradient-start-dark: #6a11cb;
     --heading-gradient-mid1-dark: #2575fc;
     --heading-gradient-mid2-dark: #ff7e5f;
@@ -718,8 +745,8 @@ body.light {
     --nav-link-color: #333; /* Light mode nav link color */
     --nav-link-hover-bg: #10898d;
     --nav-link-active-bg: #0077b5;
-    --theme-toggle-color: #333;
-    --theme-toggle-hover-color: #0077b5;
+    --theme-toggle-color: #333; /* This variable is less relevant now as we use GIFs */
+    --theme-toggle-hover-color: #0077b5; /* This variable is less relevant now as we use GIFs */
     --heading-gradient-start-light: #2575fc;
     --heading-gradient-mid1-light: #6a11cb;
     --heading-gradient-mid2-light: #FFC700;
@@ -745,10 +772,10 @@ body {
 }
 
 .nav-links li .theme-toggle-btn {
-    color: var(--theme-toggle-color);
+    color: var(--theme-toggle-color); /* This will be transparent due to font-size: 0; but kept for safety */
 }
 .nav-links li .theme-toggle-btn:hover {
-    color: var(--theme-toggle-hover-color);
+    color: var(--theme-toggle-hover-color); /* This will be transparent due to font-size: 0; but kept for safety */
 }
 .nav-links a {
     color: var(--nav-link-color);
@@ -864,12 +891,11 @@ body:not(.light) .pie-chart-container h3 {
     color: var(--text-color) !important;
 }
 
-/* ==========================
-   Experience Section Styling
-   ========================== */
-
+/* ============================
+    Experience Section Styling
+   ============================ */
 .section-experience, .section-projects {
-    padding: 80px 50px;
+    padding: 20px 30px;
     text-align: center;
 }
 
@@ -911,7 +937,6 @@ body:not(.light) .pie-chart-container h3 {
 .experience-item:nth-child(4) { animation-delay: 0.4s; }
 .experience-item:nth-child(5) { animation-delay: 0.5s; }
 
-
 .experience-item:hover {
     transform: translateY(-8px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
@@ -942,7 +967,6 @@ body:not(.light) .pie-chart-container h3 {
     flex-grow: 1;
 }
 
-
 .experience-item ul li, .project-item ul li {
     font-size: 0.95rem;
     color: var(--card-text-color);
@@ -952,10 +976,9 @@ body:not(.light) .pie-chart-container h3 {
 }
 
 
-/* ==========================================
-   Responsive Design Adjustments (for Mobile)
-   ========================================== */
-
+/* ===========================================
+    Responsive Design Adjustments (for Mobile)
+   =========================================== */
 @media (max-width: 768px) {
     /* ... (Your other mobile styles for 768px breakpoint) ... */
 
@@ -1037,10 +1060,9 @@ body.dark {
     --box-shadow: 0 4px 12px rgba(255, 255, 255, 0.08);
 }
 
-/* =========================================================================
-   Professional Experience Card - Date & Duration Alignment
-   ========================================================================= */
-
+/* ==========================================================
+    Professional Experience Card - Date & Duration Alignment
+   ========================================================== */
 .experience-item p.date, .project-item p.date {
     /* Your existing styles for the date paragraph */
     font-size: 0.95rem;
@@ -1148,11 +1170,11 @@ body.dark {
 }
 
 
-/* =================================
-   Featured Projects Section Styling
-   ================================= */
+/* ===================================
+    Featured Projects Section Styling
+   =================================== */
 .section-projects {
-    padding: 80px 50px;
+    padding: 20px 30px;
     text-align: center;
 }
 
@@ -1192,13 +1214,11 @@ body.dark {
 }
 
 
-/* ==========================================
-   Featured Projects - Button Hover Animation
-   ========================================== */
-/* Styles for individual filter buttons */
+/* ============================================
+    Featured Projects - Button Hover Animation
+   ============================================ */
 /* --- Styles for Main Filter Buttons (e.g., SQL, Python, Power BI) --- */
 
-/* Base styles for individual filter buttons */
 .filter-btn {
     background-color: var(--project-button-bg); /* Use theme variable */
     color: white; /* Default text color */
@@ -1345,9 +1365,9 @@ body.dark .project-item.visible {
 }
 
 
-/* ==================================================
+/* ===================================================
     Individual Project Skill Buttons inside the cards
-   ================================================== */
+   =================================================== */
 
 /* Container for skill buttons within a project item */
 .project-item .project-skills-buttons {
@@ -1441,8 +1461,9 @@ body.dark .skill-btn.active {
     transform: scaleX(1) scaleY(1);
 }
 
-
-/* --- Styling for active (highlighted) skill buttons within project cards --- */
+/* =====================================================================
+    Styling for active (highlighted) skill buttons within project cards
+   ===================================================================== */
 /* (This section affects the *smaller* skill buttons inside the project cards) */
 .skill-btn.active {
     background-color: var(--nav-link-active-bg) !important; /* Added !important for emphasis */
@@ -1479,10 +1500,9 @@ body.dark .skill-btn.active:hover {
 }
 
 
-/* ==================================================
+/* ===================================================
     Hover Image Preview Styling on View Images Button
-   ================================================== */
-
+   =================================================== */
 .btn-project.view-images-btn {
     overflow: visible; /* Allow the popup to extend beyond the button's bounds */
 }
@@ -1637,7 +1657,9 @@ body.dark .preview-nav-arrow:hover {
     background-color: rgba(255, 255, 255, 0.4);
 }
 
-/* Full-Screen Image Zoom Overlay Styling (no changes) */
+/* ========================================
+    Full-Screen Image Zoom Overlay Styling
+   ======================================== */
 .full-screen-zoom-overlay {
     position: fixed;
     top: 0;
@@ -1692,11 +1714,11 @@ body.dark .preview-nav-arrow:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-/*  ===================================
-    Technical Expertise Section Styling
-    =================================== */
+/*  =====================================
+     Technical Expertise Section Styling
+    ===================================== */
 .expertise-section {
-    padding: 60px 50px;
+    margin-top: 10px;
     text-align: center;
     min-height: 600px;
     color: var(--text-color); /* This variable controls general text in this section *outside* the canvas */
@@ -1717,9 +1739,14 @@ body.dark .preview-nav-arrow:hover {
     justify-content: center;
 }
 
+/* Styling for the specific pie chart that needs more space */
+.pie-chart-wider {
+    grid-column: span 2; /* This makes the item span 2 columns within the grid */
+}
+
 /* Individual chart container styling */
 .bar-chart, .pie-chart-container {
-    height: 400px; /* Consistent height for all charts */
+    height: 350px; /* Consistent height for all charts */
     background: var(--card-bg-color); /* This is the line that makes it dark in dark mode by default */
     border-radius: 15px;
     padding: 20px;
@@ -1750,14 +1777,6 @@ body:not(.light) .pie-chart-container {
     color: #333 !important; /* Ensures any HTML text *directly within* these containers is dark */
 }
 
-/* If your overall theme switches by adding/removing a 'dark' class instead of 'light' */
-/* body.dark .bar-chart, */
-/* body.dark .pie-chart-container { */
-/* background: #ffffff !important; */
-/* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important; */
-/* color: #333 !important; */
-/* } */
-
 /* Specific styling for chart canvases within their containers */
 .bar-chart canvas, .pie-chart-container canvas {
     width: 100% !important; /* Ensure canvas fills container */
@@ -1783,9 +1802,9 @@ body:not(.light) .pie-chart-container {
     color: #333 !important; /* Force dark HTML titles if Chart.js creates them as HTML */
 }
 
-/*  =========================================
-    Technical Expertise - GIF Section Styling
-    ========================================= */
+/*  ===========================================
+     Technical Expertise - GIF Section Styling
+    =========================================== */
 .heading-icon-gif {
     /* Adjust these values to control the GIF's size */
     width: 30px; /* Example: set a specific width */
@@ -1819,17 +1838,12 @@ body:not(.light) .pie-chart-container {
     margin-left: 2px; /* A little space to the left, after "Hi" */
 }
 
-/* ===============================
-    Pie Chart Specific Styling (Consolidated)
-================================= */
-/* Hover effects for charts are now handled by .bar-chart:hover */
-
 
 /* ===========================
     Education Section Styling
    =========================== */
 .section-education {
-    padding: 80px 50px;
+    padding: 20px 20px;
     text-align: center;
 }
 
@@ -1841,7 +1855,7 @@ body:not(.light) .pie-chart-container {
     display: flex;
     flex-direction: row; /* Keep items in a row */
     gap: 30px;
-    margin-top: 20px;
+    margin-top: 10px;
     justify-content: center;
     flex-wrap: wrap;
     max-width: 900px;
@@ -1998,10 +2012,9 @@ body.dark .icon /* Dark mode shadow for icons */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* ===============================================================
-     About Section Styling (Consolidated and Cleaned)
-     - Requires HTML structure with <div class="about-card-content">
-   =============================================================== */
+/* =======================
+    About Section Styling
+   ======================= */
 
 /* Overall Section Styling (Keep this for general section padding/alignment) */
 #about.section {
@@ -2009,14 +2022,6 @@ body.dark .icon /* Dark mode shadow for icons */
     text-align: center; /* Centers the card horizontally within the section */
     color: var(--text-color); /* General text color for the section (e.g., section title) */
 }
-
-/* REMOVE THIS RULE: The h3 for "Professional Summary" is inside the card now,
-   and will be styled by a more specific rule below. This rule is likely for
-   a section's main H3, but your section title should ideally be an H2.
-.about-section h3 {
-    color: var(--text-color);
-}
-*/
 
 /* The Main About Section Card Container */
 .about-section-card {
@@ -2090,16 +2095,6 @@ body.dark .icon /* Dark mode shadow for icons */
     margin-top: 0; /* REMOVES default top margin to reduce extra space above heading */
     margin-bottom: 15px; /* CONTROLS space *after* the heading (adjust this value as needed) */
 }
-
-/* REMOVE THIS RULE: Its functionality is now handled by .about-section-card .about-card-content.
-   The padding previously here was causing issues when h3 was placed directly inside the card.
-.about-section-card > ul {
-    position: relative;
-    z-index: 25;
-    padding: 20px;
-    text-align: left;
-}
-*/
 
 /* On hover, expand and show the animated border (KEEP THIS) */
 .about-section-card:hover::before {
@@ -2198,9 +2193,9 @@ body.light .about-section-card .about-bullets li {
 }
 
 
-/* ===============================
+/* =========================
     Contact Section Styling
-================================= */
+   ========================= */
 .section-contact p {
     font-size: 1.1rem;
     max-width: 700px;
@@ -2324,10 +2319,9 @@ body.light .about-section-card .about-bullets li {
   -webkit-text-fill-color: transparent; /* For Safari */
 }
 
-/* =========================================================================
-   Responsive Design Adjustments (Add these sections to the END of your CSS)
-   ========================================================================= */
-
+/* ===============================
+    Responsive Design Adjustments
+   =============================== */
 
 /* ---------------------------------------------------
    1. For Tablets and Smaller Laptops (e.g., max-width 1024px)
